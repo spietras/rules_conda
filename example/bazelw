@@ -1,0 +1,61 @@
+#!/usr/bin/env sh
+
+# Globals
+
+BAZELISK_DIR='tools/bazelisk'
+
+# Check architecture and operating system
+
+arch=$(uname -m)
+
+case "$arch" in
+  'x86_64' | 'amd64') 
+    arch='amd64' ;;
+  'aarch64' | 'aarch64_be' | 'armv8b' | 'armv8l' | 'arm64') 
+    arch='arm64' ;;
+  *)
+    echo "Unsupported architecture: $arch"
+    exit 1
+    ;;
+esac
+
+os=$(uname | tr '[:upper:]' '[:lower:]')
+
+case "$os" in
+  linux*)
+    os="linux"
+    ext=""
+    ;;
+  darwin*)
+    os="darwin"
+    ext=""
+    ;;
+  msys* | mingw* | cygwin*)
+    os="windows"
+    ext=".exe"
+    ;;
+  *)
+    echo "Unsupported OS: $os"
+    exit 2
+    ;;
+esac
+
+# Check if bazelisk is present and executable
+
+BAZELISK_EXECUTABLE="$BAZELISK_DIR/bazelisk-$os-$arch$ext"
+
+if [ ! -e "$BAZELISK_EXECUTABLE" ]
+then
+  echo "$BAZELISK_EXECUTABLE doesn't exist"
+  exit 3
+fi
+
+if [ ! -x "$BAZELISK_EXECUTABLE" ]
+then
+  echo "$BAZELISK_EXECUTABLE is not executable"
+  exit 4
+fi
+
+# Execute bazelisk and pass all arguments
+
+exec "$BAZELISK_EXECUTABLE" "$@"

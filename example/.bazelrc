@@ -1,0 +1,22 @@
+### COMMON ###
+
+# enable symlinks on windows
+startup --windows_enable_symlinks
+build --enable_runfiles
+
+run --ui_event_filters=-info --show_result 0
+test --ui_event_filters=-info --show_result 0
+
+### PYTHON ###
+
+# prevent creation of empty __init__.py
+# see: https://github.com/bazelbuild/bazel/issues/10076, https://github.com/bazelbuild/bazel/issues/7386
+build --incompatible_default_to_explicit_init_py
+test --incompatible_default_to_explicit_init_py
+
+# don't zip, see: https://github.com/bazelbuild/bazel/issues/8981
+build --build_python_zip=false
+
+### IMPORT LOCAL CONFIGURATION ###
+
+try-import %workspace%/local.bazelrc

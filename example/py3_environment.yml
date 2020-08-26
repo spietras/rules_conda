@@ -1,0 +1,9 @@
+channels:
+  - conda-forge
+dependencies:
+  - python==3.8.5
+  - pip==20.2.2
+  - numpy==1.19.1
+  - pip:
+    - scipy==1.5.2
+    - git+https://github.com/bast/somepackage.git#egg=somepackage
