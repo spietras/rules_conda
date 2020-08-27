@@ -27,4 +27,5 @@ So I think these rules suit you if you don't use a lot of third-party dependenci
 
 ## TODO
 
-- TODO TODO xD
+- test on Windows
+- support 32-bit machines
