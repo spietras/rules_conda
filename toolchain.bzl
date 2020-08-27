@@ -16,20 +16,20 @@ toolchain(
 )
 """
 
-def _toolchain_impl(repository_ctx):
-    py2_runtime=repository_ctx.attr.py2_runtime
-    py3_runtime=repository_ctx.attr.py3_runtime
+def _toolchain_impl(rctx):
+    py2_runtime=rctx.attr.py2_runtime
+    py3_runtime=rctx.attr.py3_runtime
 
     # python2_runtime can be None, in this case insert string None
     py2_runtime_value = "\"{}\"".format(py2_runtime) if py2_runtime else "None"
     py3_runtime_value = "\"{}\"".format(py3_runtime)
 
     # create BUILD file with toolchain definition
-    repository_ctx.file(
+    rctx.file(
         "BUILD",
         content = BUILD_FILE_CONTENT.format(py2_runtime=py2_runtime_value, 
                                             py3_runtime=py3_runtime_value,
-                                            toolchain_name=repository_ctx.attr.toolchain_name)
+                                            toolchain_name=rctx.attr.toolchain_name)
     )
 
 toolchain_rule = repository_rule(

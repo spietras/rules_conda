@@ -30,7 +30,9 @@ local_repository(
 load("@rules_conda//:defs.bzl", "load_conda", "conda_create", "register_toolchain")
 
 # download and install conda
-load_conda()
+load_conda(
+    version="4.8.4"
+)
 
 # create conda environment with python2
 conda_create(
@@ -46,6 +48,6 @@ conda_create(
 
 # register python binaries from environments as toolchain
 register_toolchain(
-    py2_env = "py2_env",  # optional
+    py2_env = "py2_env",
     py3_env = "py3_env"
 )
