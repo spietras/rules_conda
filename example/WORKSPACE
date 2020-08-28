@@ -37,13 +37,13 @@ load_conda(
 # create conda environment with python2
 conda_create(
     name = "py2_env",
-    environment = "@//:py2_environment.yml"
+    environment = "@//third_party/conda:py2_environment.yml"
 )
 
 # create conda environment with python2
 conda_create(
     name = "py3_env",
-    environment = "@//:py3_environment.yml"
+    environment = "@//third_party/conda:py3_environment.yml"
 )
 
 # register python binaries from environments as toolchain

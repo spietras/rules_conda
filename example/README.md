@@ -16,11 +16,11 @@ Windows:
 Linux:
 
 ```
-./bazelw run main
+./bazelw run app
 ```
 
 Windows:
 
 ```
-bazelw run main
+bazelw run app
 ```
