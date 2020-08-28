@@ -4,6 +4,8 @@
 
 BAZELISK_DIR='tools/bazelisk'
 
+# Extra environmental variables
+
 # Check architecture and operating system
 
 arch=$(uname -m)

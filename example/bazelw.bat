@@ -8,6 +8,13 @@ set "BAZELISK_DIR=tools/bazelisk"
 set "SYSTEM=windows"
 set "EXTENSION=.exe"
 
+@rem Extra environmental variables
+
+@rem this allows proper DLL loading, because the environment is not in PATH
+@rem requires new Python versions
+@rem see https://docs.conda.io/projects/conda/en/latest/user-guide/troubleshooting.html#mkl-library
+set "CONDA_DLL_SEARCH_MODIFICATION_ENABLE=1"
+
 @rem Check architecture
 
 set FOUND=0
