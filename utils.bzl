@@ -62,10 +62,22 @@ def get_arch(rctx):
     return get_arch_linux(rctx)
 
 
-def execute_waitable_windows(rctx, args, tmp_script="tmp.bat", **kwargs):
+TMP_SCRIPT_TEMPLATE = """
+@echo off
+if "%OS%"=="Windows_NT" setlocal
+{envs}
+call {args}
+set "EXITCODE=%ERRORLEVEL%"
+if "%OS%"=="Windows_NT" ( endlocal & exit /b "%EXITCODE%" )
+exit /b "%EXITCODE%""
+"""
+
+
+def execute_waitable_windows(rctx, args, environment={}, tmp_script="tmp.bat", **kwargs):
     rctx.file(
         tmp_script,
-        content = """start /wait "" {}""".format(" ".join([str(a) for a in args]))
+        content = TMP_SCRIPT_TEMPLATE.format(envs='\n'.join(["set \"{}={}\"".format(k, v) for k, v in environment.items()]),
+                                             args=" ".join([str(a) for a in args]))
     )
     result = rctx.execute([rctx.path(tmp_script)], **kwargs)
     rctx.delete(tmp_script)

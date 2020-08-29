@@ -68,7 +68,10 @@ def _install_conda(rctx, installer):
 
     # execute installer with flags adjusted to OS
     if os == "Windows":
-        result = execute_waitable_windows(rctx, args, quiet=rctx.attr.quiet)
+        # TODO: fix always returning 0
+        # it seems that either miniconda installer returns 0 even on failure or the wrapper does something wrong
+        # also stdout and stderr are always empty
+        result = execute_waitable_windows(rctx, args, quiet=rctx.attr.quiet, environment={"CONDA_DLL_SEARCH_MODIFICATION_ENABLE": ""})
     else:
         result = rctx.execute(args, quiet=rctx.attr.quiet)
 
