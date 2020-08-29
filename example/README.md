@@ -5,8 +5,9 @@ Simple Python app demonstrating usage of ```rules_conda```
 ## Requirements
 
 Linux:
-- ```glibc``` (```Bazel``` dependency)
-- any ```python``` (```rules_python``` dependency)
+- ```glibc```
+- any ```python```
+- any C compiler (like ```gcc```)
 
 Windows:
 - as far as I'm concerned: nothing
