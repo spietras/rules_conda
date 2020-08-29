@@ -28,7 +28,7 @@ http_archive(
 
 RULES_CONDA_NAME = "rules_conda"
 RULES_CONDA_TAG = "0.0.1"
-RULES_CONDA_SHA = "945d040a3bcc91f9fea3069b4ab16a03ed0b699dcf00a7a97fcb8674ca780677"
+RULES_CONDA_SHA = "f5c5e6be86ddc28ef2ed9163878f5a073defc5d79b82e60570f502549c9ef602"
 RULES_CONDA_REPO = "spietras"
 RULES_CONDA_ARCHIVE = "zip"
 RULES_CONDA_URL = "https://github.com/{repo}/{name}/releases/download/{tag}/{name}-{tag}.{archive}".format(repo=RULES_CONDA_REPO, name=RULES_CONDA_NAME, tag=RULES_CONDA_TAG, archive=RULES_CONDA_ARCHIVE)
