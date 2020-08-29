@@ -4,11 +4,11 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 RULES_PYTHON_NAME = "rules_python"
 RULES_PYTHON_TAG = "0.0.2"
-RULES_PYTHON_PREFIX = "%s-%s" % (RULES_PYTHON_NAME, RULES_PYTHON_TAG)
-RULES_PYTHON_SHA = "a0480851566fc9c20a532d0dd6e21f03c95db5d1a167304d728aa52ebc820d26"
+RULES_PYTHON_PREFIX = "{name}-{tag}".format(name=RULES_PYTHON_NAME, tag=RULES_PYTHON_TAG)
+RULES_PYTHON_SHA = "b5668cde8bb6e3515057ef465a35ad712214962f0b3a314e551204266c7be90c"
 RULES_PYTHON_REPO = "bazelbuild"
-RULES_PYTHON_ARCHIVE = "zip"
-RULES_PYTHON_URL = "https://github.com/%s/%s/archive/%s.%s" % (RULES_PYTHON_REPO, RULES_PYTHON_NAME, RULES_PYTHON_TAG, RULES_PYTHON_ARCHIVE)
+RULES_PYTHON_ARCHIVE = "tar.gz"
+RULES_PYTHON_URL = "https://github.com/{repo}/{name}/releases/download/{tag}/{name}-{tag}.{archive}".format(repo=RULES_PYTHON_REPO, name=RULES_PYTHON_NAME, tag=RULES_PYTHON_TAG, archive=RULES_PYTHON_ARCHIVE)
 
 # use http_archive rule to load rules_python repo
 http_archive(
@@ -20,34 +20,47 @@ http_archive(
 
 ### RULES_CONDA ###
 
-# load local repository
-# in a real world, you would rather download it with http_archive, like in rules_python above
-local_repository(
-    name = "rules_conda",
-    path = "../",
+# use this instead of http_archive if you cloned the repo and want to use the local version
+#local_repository(
+#    name = "rules_conda",
+#    path = "../",
+#)
+
+RULES_CONDA_NAME = "rules_conda"
+RULES_CONDA_TAG = "0.0.1"
+RULES_CONDA_SHA = "945d040a3bcc91f9fea3069b4ab16a03ed0b699dcf00a7a97fcb8674ca780677"
+RULES_CONDA_REPO = "spietras"
+RULES_CONDA_ARCHIVE = "zip"
+RULES_CONDA_URL = "https://github.com/{repo}/{name}/releases/download/{tag}/{name}-{tag}.{archive}".format(repo=RULES_CONDA_REPO, name=RULES_CONDA_NAME, tag=RULES_CONDA_TAG, archive=RULES_CONDA_ARCHIVE)
+
+# use http_archive rule to load rules_conda repo
+http_archive(
+    name = RULES_CONDA_NAME,
+    sha256 = RULES_CONDA_SHA,
+    url = RULES_CONDA_URL
 )
 
 load("@rules_conda//:defs.bzl", "load_conda", "conda_create", "register_toolchain")
 
 # download and install conda
 load_conda(
-    version="4.8.4"
+    version="4.8.4" # optional, defaults to 4.8.4
 )
 
-# create conda environment with python2
+# create environment with python2
 conda_create(
     name = "py2_env",
-    environment = "@//third_party/conda:py2_environment.yml"
+    environment = "@//third_party/conda:py2_environment.yml" # label pointing to environment.yml file
 )
 
-# create conda environment with python3
+# create environment with python3
 conda_create(
     name = "py3_env",
-    environment = "@//third_party/conda:py3_environment.yml"
+    environment = "@//third_party/conda:py3_environment.yml" # label pointing to environment.yml file
 )
 
-# register python binaries from environments as toolchain
+# register pythons from environment as toolchain
 register_toolchain(
-    py2_env = "py2_env",
+    py2_env = "py2_env", # python2 is optional
     py3_env = "py3_env"
 )

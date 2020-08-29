@@ -1,6 +1,6 @@
 # rules_conda
 
-Rules for creating conda environments in Bazel :green_heart:
+Rules for creating ```conda``` environments in Bazel :green_heart:
 
 ## Requirements
 
@@ -8,9 +8,50 @@ Rules for creating conda environments in Bazel :green_heart:
 
 Remember that some packages (e.g. ```dlib```) are actually being compiled during installation and sometimes they need your local tools to compile (e.g. ```g++```).
 
+## Usage
+
+Add this to your ```WORKSPACE``` file:
+
+```
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "rules_conda",
+    sha256 = "945d040a3bcc91f9fea3069b4ab16a03ed0b699dcf00a7a97fcb8674ca780677",
+    url = "https://github.com/spietras/rules_conda/releases/download/0.0.1/rules_conda-0.0.1.zip"
+)
+
+load("@rules_conda//:defs.bzl", "load_conda", "conda_create", "register_toolchain")
+
+# download and install conda
+load_conda(
+    version="4.8.4" # optional, defaults to 4.8.4
+)
+
+# create environment with python2
+conda_create(
+    name = "py2_env",
+    environment = "@//third_party/conda:py2_environment.yml" # label pointing to environment.yml file
+)
+
+# create environment with python3
+conda_create(
+    name = "py3_env",
+    environment = "@//third_party/conda:py3_environment.yml" # label pointing to environment.yml file
+)
+
+# register pythons from environment as toolchain
+register_toolchain(
+    py2_env = "py2_env", # python2 is optional
+    py3_env = "py3_env"
+)
+```
+
+After that, all Python targets will use the environments specified in ```register_toolchain```.
+
 ## Who should use this?
 
-These rules allow you to download and install conda, create conda environments and register Python toolchain from environments.
+These rules allow you to download and install ```conda```, create ```conda``` environments and register Python toolchain from environments.
 
 Pros:
 - easy to use
@@ -22,11 +63,11 @@ Pros:
 
 Cons:
 - every time you update your environment configuration in ```environment.yml```, the whole environment will be recreated from scratch
-- currently works only on 64-bit machines
 - on Windows you need to add environment location to ```PATH``` or set ```CONDA_DLL_SEARCH_MODIFICATION_ENABLE=1``` during runtime, so DLLs can be loaded properly (more on that below) 
 
 So I think these rules suit you if:
-- you want to use ```Bazel``` (e.g. for local package management)
+- you want to use Bazel (e.g. for local package management)
+- you want to use ```conda``` for third-party Python package management
 - you don't want to set up your Python environment manually or want your Python targets to _just work_ on clean systems
 - you don't use a lot of third-party dependencies
 - you are okay with environments being recreated every time something changes
@@ -35,7 +76,7 @@ So I think these rules suit you if:
 
 With usual ```conda``` usage, you should ```activate``` you environment before doing anything. Activating an environment prepends some paths to ```PATH``` variable. This is crucial on Windows, because some ```conda``` packages need to load DLLs, which are stored in ```conda``` environments and the path to them must be in ```PATH``` variable for Windows to properly load them. On Linux, it somehow works without having to modify ```PATH```.
 
-But here comes the issue: at this moment, I'm not aware of any way to either ```activate``` an environment before launching Python targets or adding anything to ```PATH``` automatically by ```Bazel```.
+But here comes the issue: at this moment, I'm not aware of any way to either ```activate``` an environment before launching Python targets or adding anything to ```PATH``` automatically by Bazel.
 
 So the user has to do something to resolve the ```PATH``` issue. There are two ways:
 
@@ -63,10 +104,8 @@ So the user has to do something to resolve the ```PATH``` issue. There are two w
 
 	This method only works with newer Python builds. More information [here](https://docs.conda.io/projects/conda/en/latest/user-guide/troubleshooting.html#mkl-library).
 
-In the future I hope that either ```conda``` (or Python, or Windows DLL loading, whatever is responsible for that) will change to work without activation or it will be possible to set environmetal variables inside ```Bazel```.
+In the future I hope that either ```conda``` (or Python, or Windows DLL loading, whatever is responsible for that) will change to work without activation or it will be possible to set environmetal variables inside Bazel.
 
 ## TODO
 
-- add usage example to README
-- release first package
-- change example to download package from github, instead of using local workspace
+- don't recreate environments from scratch when configuration changes
