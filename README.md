@@ -67,7 +67,6 @@ In the future I hope that either ```conda``` (or Python, or Windows DLL loading,
 
 ## TODO
 
-- support 32-bit machines
 - add usage example to README
 - release first package
 - change example to download package from github, instead of using local workspace

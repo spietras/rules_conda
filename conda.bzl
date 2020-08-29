@@ -1,15 +1,20 @@
-load(":utils.bzl", "INSTALLER_SCRIPT_EXT_MAP", "CONDA_EXT_MAP", "get_os", "execute_waitable_windows", "windowsify")
-
-# TODO: other architectures
-ARCH = "x86_64"
+load(":utils.bzl", "INSTALLER_SCRIPT_EXT_MAP", "CONDA_EXT_MAP", "get_os", "get_arch", "execute_waitable_windows", "windowsify")
 
 # CONDA CONFIGURATION
 CONDA_MAJOR = "3"
 CONDA_MINOR = "py38_4.8.3"
 CONDA_SHA = {
-    "Windows": "1f4ff67f051c815b6008f144fdc4c3092af2805301d248b56281c36c1f4333e5",
-    "MacOSX": "9b9a353fadab6aa82ac0337c367c23ef842f97868dcbb2ff25ec3aa463afc871",
-    "Linux": "879457af6a0bf5b34b48c12de31d4df0ee2f06a8e68768e5758c3293b2daf688"
+    "Windows": {
+        "x86_64" : "1f4ff67f051c815b6008f144fdc4c3092af2805301d248b56281c36c1f4333e5",
+        "x86" : "415920293ae005a17afaef4c275bd910b06c07d8adf5e0cbc9c69f0f890df976"
+    },
+    "MacOSX": {
+        "x86_64" : "9b9a353fadab6aa82ac0337c367c23ef842f97868dcbb2ff25ec3aa463afc871"
+    },
+    "Linux": {
+        "x86_64" : "879457af6a0bf5b34b48c12de31d4df0ee2f06a8e68768e5758c3293b2daf688",
+        "ppc64le" : "362705630a9e85faf29c471faa8b0a48eabfe2bf87c52e4c180825f9215d313c"
+    }
 }
 CONDA_INSTALLER_NAME_TEMPLATE = "Miniconda{major}-{minor}-{os}-{arch}.{ext}"
 CONDA_BASE_URL = "https://repo.anaconda.com/miniconda/"
@@ -40,15 +45,15 @@ def _get_installer_flags(rctx, dir):
 def _download_conda(rctx):
     rctx.report_progress("Downloading conda installer")
     os = get_os(rctx)
-    # TODO: check architecture also, for now downloading everything as 64 bit
+    arch = get_arch(rctx)
     ext = INSTALLER_SCRIPT_EXT_MAP[os]
-    url = CONDA_BASE_URL + CONDA_INSTALLER_NAME_TEMPLATE.format(major=CONDA_MAJOR, minor=CONDA_MINOR, os=os, arch=ARCH, ext=ext)
+    url = CONDA_BASE_URL + CONDA_INSTALLER_NAME_TEMPLATE.format(major=CONDA_MAJOR, minor=CONDA_MINOR, os=os, arch=arch, ext=ext)
     output = "{}/install{}".format(INSTALLER_DIR, ext)
     # download from url to output
     rctx.download(
         url = url,
         output = output,
-        sha256 = CONDA_SHA[os],
+        sha256 = CONDA_SHA[os][arch],
         executable = True
     )
     return output
