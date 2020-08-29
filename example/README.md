@@ -15,12 +15,12 @@ Windows:
 
 Linux:
 
-```
+```sh
 ./bazelw run app
 ```
 
 Windows:
 
-```
+```cmd
 bazelw run app
 ```

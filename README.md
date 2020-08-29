@@ -12,7 +12,7 @@ Remember that some packages (e.g. ```dlib```) are actually being compiled during
 
 Add this to your ```WORKSPACE``` file:
 
-```
+```Starlark
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
@@ -84,7 +84,7 @@ So the user has to do something to resolve the ```PATH``` issue. There are two w
 
 	Before running the target, set the ```PATH``` to include the path to ```your_env/Library/bin```. For example:
 
-	```
+	```cmd
 	cmd /C "set PATH={full path to workspace}\bazel-{name}\external\{env_name}\{env_name}\Library\bin;%PATH%&& bazelw run {target}"
 	```
 
@@ -96,7 +96,7 @@ So the user has to do something to resolve the ```PATH``` issue. There are two w
 
 	So you can for example do:
 
-	```
+	```cmd
 	cmd /C "set CONDA_DLL_SEARCH_MODIFICATION_ENABLE=1&& bazelw run {target}"
 	```
 
