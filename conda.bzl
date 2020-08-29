@@ -16,7 +16,7 @@ CONDA_SHA = {
         "ppc64le" : "362705630a9e85faf29c471faa8b0a48eabfe2bf87c52e4c180825f9215d313c"
     }
 }
-CONDA_INSTALLER_NAME_TEMPLATE = "Miniconda{major}-{minor}-{os}-{arch}.{ext}"
+CONDA_INSTALLER_NAME_TEMPLATE = "Miniconda{major}-{minor}-{os}-{arch}{ext}"
 CONDA_BASE_URL = "https://repo.anaconda.com/miniconda/"
 CONDA_INSTALLER_FLAGS = {
     "Windows": ["/InstallationType=JustMe", "/AddToPath=0", "/RegisterPython=0", "/S", "/D={}"],
