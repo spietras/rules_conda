@@ -40,7 +40,7 @@ conda_create(
     environment = "@//third_party/conda:py2_environment.yml"
 )
 
-# create conda environment with python2
+# create conda environment with python3
 conda_create(
     name = "py3_env",
     environment = "@//third_party/conda:py3_environment.yml"
