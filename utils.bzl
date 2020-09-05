@@ -16,6 +16,9 @@ PYTHON_EXT_MAP = {
     "Linux": ""
 }
 
+EXECUTE_TIMEOUT = 1800
+
+
 def get_os(rctx):
     os_family = rctx.os.name.lower()
     if "windows" in os_family:
