@@ -78,7 +78,7 @@ def _install_conda(rctx, installer):
         result = rctx.execute(args, quiet=rctx.attr.quiet, timeout=EXECUTE_TIMEOUT)
 
     if result.return_code:
-        fail("Failure installing conda.\n{}\n{}".format(result.stdout, result.stderr))
+        fail("Failure installing conda.\nstdout: {}\nstderr: {}".format(result.stdout, result.stderr))
     return "{}/condabin/conda{}".format(rctx.attr.conda_dir, CONDA_EXT_MAP[os])
 
 
@@ -89,7 +89,7 @@ def _update_conda(rctx, executable):
     # update conda itself
     result = rctx.execute(args, quiet=rctx.attr.quiet, working_directory=rctx.attr.conda_dir, timeout=EXECUTE_TIMEOUT)
     if result.return_code:
-        fail("Failure updating conda.\n{}\n{}".format(result.stdout, result.stderr))
+        fail("Failure updating conda.\nstdout: {}\nstderr: {}".format(result.stdout, result.stderr))
 
 
 # create BUILD file with exposed conda binary

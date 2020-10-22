@@ -37,7 +37,7 @@ def _create_environment(rctx, executable, env_name):
     
     result = rctx.execute(args, quiet=rctx.attr.quiet, timeout=EXECUTE_TIMEOUT)
     if result.return_code:
-        fail("Failure creating environment.\n{}\n{}".format(result.stdout, result.stderr))
+        fail("Failure creating environment.\nstdout: {}\nstderr: {}".format(result.stdout, result.stderr))
 
 
 # check if python2 or python3 has been installed
