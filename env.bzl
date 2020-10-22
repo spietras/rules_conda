@@ -15,6 +15,17 @@ py_runtime(
 """
 
 
+# clean conda caches and unused packages
+def _clean(rctx, executable):
+    rctx.report_progress("Cleaning up")
+    
+    args = [rctx.path(executable), "clean", "-a", "-y"]
+    
+    result = rctx.execute(args, quiet=rctx.attr.quiet, timeout=EXECUTE_TIMEOUT)
+    if result.return_code:
+        fail("Failure cleaning up.\nstdout: {}\nstderr: {}".format(result.stdout, result.stderr))
+
+
 # create new local conda environment from file
 def _create_environment(rctx, executable, env_name):
     rctx.report_progress("Creating conda environment")
@@ -55,7 +66,9 @@ def _conda_create_impl(rctx):
     conda_label = Label("@{}//:{}/condabin/conda{}".format(rctx.attr.conda_repo, rctx.attr.conda_dir, CONDA_EXT_MAP[get_os(rctx)]))
     executable = str(rctx.path(conda_label))
     env_name = rctx.name
+    _clean(rctx, executable)
     _create_environment(rctx, executable, env_name)
+    _clean(rctx, executable)
     _create_env_build_file(rctx, env_name)
 
 
