@@ -3,9 +3,8 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 RULES_PYTHON_NAME = "rules_python"
-RULES_PYTHON_TAG = "0.0.2"
-RULES_PYTHON_PREFIX = "{name}-{tag}".format(name=RULES_PYTHON_NAME, tag=RULES_PYTHON_TAG)
-RULES_PYTHON_SHA = "b5668cde8bb6e3515057ef465a35ad712214962f0b3a314e551204266c7be90c"
+RULES_PYTHON_TAG = "0.1.0"
+RULES_PYTHON_SHA = "b6d46438523a3ec0f3cead544190ee13223a52f6a6765a29eae7b7cc24cc83a0"
 RULES_PYTHON_REPO = "bazelbuild"
 RULES_PYTHON_ARCHIVE = "tar.gz"
 RULES_PYTHON_URL = "https://github.com/{repo}/{name}/releases/download/{tag}/{name}-{tag}.{archive}".format(repo=RULES_PYTHON_REPO, name=RULES_PYTHON_NAME, tag=RULES_PYTHON_TAG, archive=RULES_PYTHON_ARCHIVE)
@@ -13,7 +12,6 @@ RULES_PYTHON_URL = "https://github.com/{repo}/{name}/releases/download/{tag}/{na
 # use http_archive rule to load rules_python repo
 http_archive(
     name = RULES_PYTHON_NAME,
-    strip_prefix = RULES_PYTHON_PREFIX,
     sha256 = RULES_PYTHON_SHA,
     url = RULES_PYTHON_URL
 )
