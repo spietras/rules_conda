@@ -16,7 +16,7 @@ PYTHON_EXT_MAP = {
     "Linux": ""
 }
 
-EXECUTE_TIMEOUT = 1800
+EXECUTE_TIMEOUT = 3600
 
 
 def get_os(rctx):

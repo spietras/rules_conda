@@ -73,9 +73,9 @@ def _install_conda(rctx, installer):
         # TODO: fix always returning 0
         # it seems that either miniconda installer returns 0 even on failure or the wrapper does something wrong
         # also stdout and stderr are always empty
-        result = execute_waitable_windows(rctx, args, quiet=rctx.attr.quiet, environment={"CONDA_DLL_SEARCH_MODIFICATION_ENABLE": ""}, timeout=EXECUTE_TIMEOUT)
+        result = execute_waitable_windows(rctx, args, quiet=rctx.attr.quiet, environment={"CONDA_DLL_SEARCH_MODIFICATION_ENABLE": ""}, timeout=rctx.attr.timeout)
     else:
-        result = rctx.execute(args, quiet=rctx.attr.quiet, timeout=EXECUTE_TIMEOUT)
+        result = rctx.execute(args, quiet=rctx.attr.quiet, timeout=rctx.attr.timeout)
 
     if result.return_code:
         fail("Failure installing conda.\nstdout: {}\nstderr: {}".format(result.stdout, result.stderr))
@@ -87,7 +87,7 @@ def _update_conda(rctx, executable):
     conda_with_version = "conda={}".format(rctx.attr.version)
     args = [rctx.path(executable), "install", conda_with_version, "-y"]
     # update conda itself
-    result = rctx.execute(args, quiet=rctx.attr.quiet, working_directory=rctx.attr.conda_dir, timeout=EXECUTE_TIMEOUT)
+    result = rctx.execute(args, quiet=rctx.attr.quiet, working_directory=rctx.attr.conda_dir, timeout=rctx.attr.timeout)
     if result.return_code:
         fail("Failure updating conda.\nstdout: {}\nstderr: {}".format(result.stdout, result.stderr))
 
@@ -119,6 +119,10 @@ load_conda_rule = repository_rule(
         "quiet": attr.bool(
             default = True,
             doc = "False if conda output should be shown"
+        ),
+        "timeout": attr.int(
+            default = EXECUTE_TIMEOUT,
+            doc = "Timeout in seconds for each execute action"
         )
     }
 )

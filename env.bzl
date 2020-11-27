@@ -21,7 +21,7 @@ def _clean(rctx, executable):
     
     args = [rctx.path(executable), "clean", "-a", "-y"]
     
-    result = rctx.execute(args, quiet=rctx.attr.quiet, timeout=EXECUTE_TIMEOUT)
+    result = rctx.execute(args, quiet=rctx.attr.quiet, timeout=rctx.attr.timeout)
     if result.return_code:
         fail("Failure cleaning up.\nstdout: {}\nstderr: {}".format(result.stdout, result.stderr))
 
@@ -35,7 +35,7 @@ def _create_environment(rctx, executable, env_name):
     
     args = [rctx.path(executable), "env", "create", "-f", env_file, "-p", "./{}".format(env_name)]
     
-    result = rctx.execute(args, quiet=rctx.attr.quiet, timeout=EXECUTE_TIMEOUT)
+    result = rctx.execute(args, quiet=rctx.attr.quiet, timeout=rctx.attr.timeout)
     if result.return_code:
         fail("Failure creating environment.\nstdout: {}\nstderr: {}".format(result.stdout, result.stderr))
 
@@ -43,7 +43,7 @@ def _create_environment(rctx, executable, env_name):
 # check if python2 or python3 has been installed
 def _get_py_major(rctx, env_path, interpreter_path):
     interpreter = "{}/{}".format(env_path, interpreter_path)
-    result = rctx.execute([rctx.path(interpreter), "--version"], timeout=EXECUTE_TIMEOUT)
+    result = rctx.execute([rctx.path(interpreter), "--version"], timeout=rctx.attr.timeout)
     output = result.stdout if result.stdout else result.stderr
     return int(output.replace("Python ", "").partition(".")[0])
 
@@ -85,6 +85,10 @@ conda_create_rule = repository_rule(
         "quiet": attr.bool(
             default = True,
             doc = "False if conda output should be shown"
+        ),
+        "timeout": attr.int(
+            default = EXECUTE_TIMEOUT,
+            doc = "Timeout in seconds for each execute action"
         )
     }
 )
