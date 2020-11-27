@@ -17,27 +17,32 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "rules_conda",
-    sha256 = "17cd7377a8af8e726e188f99c4a0c2fa9e8e29eabe50b0d447a3533a56ca3a6f",
-    url = "https://github.com/spietras/rules_conda/releases/download/0.0.3/rules_conda-0.0.3.zip"
+    sha256 = "6c05d098ea82c172cd83d99c5fc892a488ffbf5f64ab3b2a32ab642c2a264e31",
+    url = "https://github.com/spietras/rules_conda/releases/download/0.0.4/rules_conda-0.0.4.zip"
 )
 
 load("@rules_conda//:defs.bzl", "load_conda", "conda_create", "register_toolchain")
 
 # download and install conda
 load_conda(
-    version="4.8.4" # optional, defaults to 4.8.4
+    version = "4.8.4",  # optional, defaults to 4.8.4
+    quiet = False  # print output
 )
 
 # create environment with python2
 conda_create(
     name = "py2_env",
-    environment = "@//third_party/conda:py2_environment.yml" # label pointing to environment.yml file
+    environment = "@//third_party/conda:py2_environment.yml",  # label pointing to environment.yml file
+    quiet = False,
+    timeout = 600  # each execute action can take up to 600 seconds
 )
 
 # create environment with python3
 conda_create(
     name = "py3_env",
-    environment = "@//third_party/conda:py3_environment.yml" # label pointing to environment.yml file
+    environment = "@//third_party/conda:py3_environment.yml",  # label pointing to environment.yml file
+    quiet = False,
+    timeout = 600
 )
 
 # register pythons from environment as toolchain
