@@ -17,8 +17,8 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "rules_conda",
-    sha256 = "6c05d098ea82c172cd83d99c5fc892a488ffbf5f64ab3b2a32ab642c2a264e31",
-    url = "https://github.com/spietras/rules_conda/releases/download/0.0.4/rules_conda-0.0.4.zip"
+    sha256 = "8298379474beb05f815afc33a42eb1732f8ebdab3aa639569473eae75e6e072b",
+    url = "https://github.com/spietras/rules_conda/releases/download/0.0.5/rules_conda-0.0.5.zip"
 )
 
 load("@rules_conda//:defs.bzl", "load_conda", "conda_create", "register_toolchain")
@@ -34,6 +34,7 @@ conda_create(
     name = "py2_env",
     environment = "@//third_party/conda:py2_environment.yml",  # label pointing to environment.yml file
     quiet = False,
+    clean = True,
     timeout = 600  # each execute action can take up to 600 seconds
 )
 
@@ -42,6 +43,7 @@ conda_create(
     name = "py3_env",
     environment = "@//third_party/conda:py3_environment.yml",  # label pointing to environment.yml file
     quiet = False,
+    clean = True,
     timeout = 600
 )
 
