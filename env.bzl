@@ -66,9 +66,9 @@ def _conda_create_impl(rctx):
     conda_label = Label("@{}//:{}/condabin/conda{}".format(rctx.attr.conda_repo, rctx.attr.conda_dir, CONDA_EXT_MAP[get_os(rctx)]))
     executable = str(rctx.path(conda_label))
     env_name = rctx.name
-    _clean(rctx, executable)
     _create_environment(rctx, executable, env_name)
-    _clean(rctx, executable)
+    if rctx.attr.clean:
+        _clean(rctx, executable)
     _create_env_build_file(rctx, env_name)
 
 
@@ -89,6 +89,10 @@ conda_create_rule = repository_rule(
         "timeout": attr.int(
             default = EXECUTE_TIMEOUT,
             doc = "Timeout in seconds for each execute action"
+        ),
+        "clean": attr.bool(
+            default = True,
+            doc = "False if conda cache should not be cleaned"
         )
     }
 )
