@@ -3,17 +3,27 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 RULES_PYTHON_NAME = "rules_python"
+
 RULES_PYTHON_TAG = "0.4.0"
+
 RULES_PYTHON_SHA = "954aa89b491be4a083304a2cb838019c8b8c3720a7abb9c4cb81ac7a24230cea"
+
 RULES_PYTHON_REPO = "bazelbuild"
+
 RULES_PYTHON_ARCHIVE = "tar.gz"
-RULES_PYTHON_URL = "https://github.com/{repo}/{name}/releases/download/{tag}/{name}-{tag}.{archive}".format(repo=RULES_PYTHON_REPO, name=RULES_PYTHON_NAME, tag=RULES_PYTHON_TAG, archive=RULES_PYTHON_ARCHIVE)
+
+RULES_PYTHON_URL = "https://github.com/{repo}/{name}/releases/download/{tag}/{name}-{tag}.{archive}".format(
+    name = RULES_PYTHON_NAME,
+    archive = RULES_PYTHON_ARCHIVE,
+    repo = RULES_PYTHON_REPO,
+    tag = RULES_PYTHON_TAG,
+)
 
 # use http_archive rule to load rules_python repo
 http_archive(
     name = RULES_PYTHON_NAME,
     sha256 = RULES_PYTHON_SHA,
-    url = RULES_PYTHON_URL
+    url = RULES_PYTHON_URL,
 )
 
 ### RULES_CONDA ###
@@ -25,47 +35,57 @@ http_archive(
 #)
 
 RULES_CONDA_NAME = "rules_conda"
+
 RULES_CONDA_TAG = "0.0.5"
+
 RULES_CONDA_SHA = "8298379474beb05f815afc33a42eb1732f8ebdab3aa639569473eae75e6e072b"
+
 RULES_CONDA_REPO = "spietras"
+
 RULES_CONDA_ARCHIVE = "zip"
-RULES_CONDA_URL = "https://github.com/{repo}/{name}/releases/download/{tag}/{name}-{tag}.{archive}".format(repo=RULES_CONDA_REPO, name=RULES_CONDA_NAME, tag=RULES_CONDA_TAG, archive=RULES_CONDA_ARCHIVE)
+
+RULES_CONDA_URL = "https://github.com/{repo}/{name}/releases/download/{tag}/{name}-{tag}.{archive}".format(
+    name = RULES_CONDA_NAME,
+    archive = RULES_CONDA_ARCHIVE,
+    repo = RULES_CONDA_REPO,
+    tag = RULES_CONDA_TAG,
+)
 
 # use http_archive rule to load rules_conda repo
 http_archive(
     name = RULES_CONDA_NAME,
     sha256 = RULES_CONDA_SHA,
-    url = RULES_CONDA_URL
+    url = RULES_CONDA_URL,
 )
 
-load("@rules_conda//:defs.bzl", "load_conda", "conda_create", "register_toolchain")
+load("@rules_conda//:defs.bzl", "conda_create", "load_conda", "register_toolchain")
 
 # download and install conda
 load_conda(
+    quiet = False,  # print output
     version = "4.10.3",  # optional, defaults to 4.10.3
-    quiet = False  # print output
 )
 
 # create environment with python2
 conda_create(
     name = "py2_env",
+    timeout = 600,  # each execute action can take up to 600 seconds
+    clean = True,  # use False if you want to avoid downloads on recreations
     environment = "@//third_party/conda:py2_environment.yml",  # label pointing to environment.yml file
     quiet = False,
-    clean = True,
-    timeout = 600  # each execute action can take up to 600 seconds
 )
 
 # create environment with python3
 conda_create(
     name = "py3_env",
+    timeout = 600,  # each execute action can take up to 600 seconds
+    clean = True,  # use False if you want to avoid downloads on recreations
     environment = "@//third_party/conda:py3_environment.yml",  # label pointing to environment.yml file
     quiet = False,
-    clean = True,
-    timeout = 600
 )
 
 # register pythons from environment as toolchain
 register_toolchain(
-    py2_env = "py2_env", # python2 is optional
-    py3_env = "py3_env"
+    py2_env = "py2_env",  # python2 is optional
+    py3_env = "py3_env",
 )
