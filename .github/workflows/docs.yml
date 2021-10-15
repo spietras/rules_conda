@@ -1,0 +1,44 @@
+name: Deploying docs
+
+on:
+  push:
+    # trigger only on main branch
+    branches:
+      - main
+    # trigger only on changes to the following files
+    paths:
+      - "docs/**"
+      - ".github/workflows/docs.yml"
+
+# env for all jobs
+env:
+  PIP_CACHE_DIR: ~/.cache/pip
+  # increase this value to manually reset cache
+  CACHE_NUMBER: 0
+
+jobs:
+  deploy-docs:
+    name: Deploy docs
+    # better to use pinned version here
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Cache packages
+        uses: actions/cache@v2
+        with:
+          path: |
+            ${{ env.PIP_CACHE_DIR }}
+          key: ${{ runner.os }}-pkgs-${{ env.CACHE_NUMBER }}
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
+      - name: Set up pip cache
+        run: python3 -m pip config set global.cache-dir ${{ env.PIP_CACHE_DIR }}
+      - name: Install mkdocs
+        working-directory: docs
+        run: python3 -m pip install -r requirements.txt
+      - name: Deploy docs
+        working-directory: docs
+        run: mkdocs gh-deploy --force
