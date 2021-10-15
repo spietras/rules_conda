@@ -1,0 +1,16 @@
+name-template: "$RESOLVED_VERSION"
+tag-template: "$RESOLVED_VERSION"
+categories:
+  - title: "🚀 Features"
+    labels:
+      - "feature"
+  - title: "🐛 Bug Fixes"
+    labels:
+      - "bug"
+exclude-labels:
+  - "skip-changelog"
+change-title-escapes: '\<*_&'
+template: |
+  ## Changes
+
+  $CHANGES
