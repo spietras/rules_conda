@@ -12,7 +12,6 @@ DEFAULT_TOOLCHAIN_NAME = "python_toolchain"
 
 # download and install conda
 def load_conda(version = DEFAULT_CONDA_VERSION, **kwargs):
-
     maybe(
         load_conda_rule,
         CONDA_REPO_NAME,
@@ -23,7 +22,6 @@ def load_conda(version = DEFAULT_CONDA_VERSION, **kwargs):
 
 # create conda environment
 def conda_create(name = DEFAULT_ENV_NAME, **kwargs):
-
     maybe(
         conda_create_rule,
         name,
@@ -33,7 +31,7 @@ def conda_create(name = DEFAULT_ENV_NAME, **kwargs):
     )
 
 # register python toolchain from environments
-def register_toolchain(py3_env, py2_env=None, name=DEFAULT_TOOLCHAIN_REPO_NAME, toolchain_name=DEFAULT_TOOLCHAIN_NAME, **kwargs):
+def register_toolchain(py3_env, py2_env = None, name = DEFAULT_TOOLCHAIN_REPO_NAME, toolchain_name = DEFAULT_TOOLCHAIN_NAME, **kwargs):
     py2_runtime = "@{}//:python_runtime".format(py2_env) if py2_env else None
     py3_runtime = "@{}//:python_runtime".format(py3_env)
 

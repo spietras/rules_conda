@@ -1,15 +1,17 @@
 # rules_conda example
 
-Simple Python app demonstrating usage of ```rules_conda```
+Simple Python app demonstrating usage of `rules_conda`
 
 ## Requirements
 
 Linux:
-- ```glibc```
-- any ```python```
-- any C compiler (like ```gcc```)
+
+- `glibc`
+- any `python`
+- any C compiler (like `gcc`)
 
 Windows:
+
 - as far as I'm concerned: nothing
 
 ## Usage
