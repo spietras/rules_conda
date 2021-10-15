@@ -1,0 +1,75 @@
+site_name: rules_conda docs
+
+repo_url: https://github.com/spietras/rules_conda
+repo_name: spietras/rules_conda
+
+# disable edit button
+edit_uri: ""
+
+theme:
+  name: material
+  logo: assets/logo.svg
+  favicon: assets/favicon.png
+  icon:
+    repo: material/github
+  palette:
+    - scheme: slate
+      primary: teal
+      accent: cyan
+      media: "(prefers-color-scheme: dark)"
+      toggle:
+        icon: material/lightbulb-outline
+        name: Switch to light mode
+    - scheme: default
+      primary: green
+      accent: lime
+      media: "(prefers-color-scheme: light)"
+      toggle:
+        icon: material/lightbulb
+        name: Switch to dark mode
+  # enable useful features
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.expand
+    - navigation.top
+    - toc.integrate
+    - header.autohide
+
+# enable useful extensions
+markdown_extensions:
+  - toc:
+      # symbol next to headers
+      permalink: 🔗
+      slugify: !!python/name:pymdownx.slugs.uslugify
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed
+  - pymdownx.superfences
+  - admonition
+  - pymdownx.details
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.smartsymbols
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - attr_list
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+plugins:
+  # enable search
+  - search
+
+extra:
+  # footer social icons
+  social:
+    - icon: material/github
+      link: https://github.com/spietras/rules_conda
+
+nav:
+  - Home: index.md
