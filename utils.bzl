@@ -42,17 +42,21 @@ def get_arch_windows(rctx):
 
 def get_arch_mac(rctx):
     arch = rctx.execute(["uname", "-m"]).stdout.strip("\n")
-    if arch in ["x86_64"]:
+    if arch in ["x86_64", "amd64"]:
         return "x86_64"
     fail("Unsupported architecture: {}".format(arch))
 
 
 def get_arch_linux(rctx):
     arch = rctx.execute(["uname", "-m"]).stdout.strip("\n")
-    if arch in ["x86_64"]:
+    if arch in ["x86_64", "amd64"]:
         return "x86_64"
-    if arch in ["ppc64le"]:
+    if arch in ["aarch64", "aarch64_be", "armv8b", "armv8l", "arm64"]:
+        return "aarch64"
+    if arch in ["ppc64le", "ppcle", "ppc64", "ppc", "powerpc"]:
         return "ppc64le"
+    if arch in ["s390x", "s390"]:
+        return "s390x"
     fail("Unsupported architecture: {}".format(arch))
 
 

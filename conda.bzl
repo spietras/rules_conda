@@ -3,18 +3,20 @@ load(":utils.bzl", "INSTALLER_SCRIPT_EXT_MAP", "CONDA_EXT_MAP", "EXECUTE_TIMEOUT
 
 # CONDA CONFIGURATION
 CONDA_MAJOR = "3"
-CONDA_MINOR = "py38_4.8.3"
+CONDA_MINOR = "py39_4.10.3"
 CONDA_SHA = {
     "Windows": {
-        "x86_64" : "1f4ff67f051c815b6008f144fdc4c3092af2805301d248b56281c36c1f4333e5",
-        "x86" : "415920293ae005a17afaef4c275bd910b06c07d8adf5e0cbc9c69f0f890df976"
+        "x86_64" : "b33797064593ab2229a0135dc69001bea05cb56a20c2f243b1231213642e260a",
+        "x86" : "24f438e57ff2ef1ce1e93050d4e9d13f5050955f759f448d84a4018d3cd12d6b"
     },
     "MacOSX": {
-        "x86_64" : "9b9a353fadab6aa82ac0337c367c23ef842f97868dcbb2ff25ec3aa463afc871"
+        "x86_64" : "786de9721f43e2c7d2803144c635f5f6e4823483536dc141ccd82dbb927cd508"
     },
     "Linux": {
-        "x86_64" : "879457af6a0bf5b34b48c12de31d4df0ee2f06a8e68768e5758c3293b2daf688",
-        "ppc64le" : "362705630a9e85faf29c471faa8b0a48eabfe2bf87c52e4c180825f9215d313c"
+        "x86_64" : "1ea2f885b4dbc3098662845560bc64271eb17085387a70c2ba3f29fff6f8d52f",
+        "aarch64": "4879820a10718743f945d88ef142c3a4b30dfc8e448d1ca08e019586374b773f",
+        "ppc64le" : "362705630a9e85faf29c471faa8b0a48eabfe2bf87c52e4c180825f9215d313c",
+        "s390x" : "1faed9abecf4a4ddd4e0d8891fc2cdaa3394c51e877af14ad6b9d4aadb4e90d8"
     }
 }
 CONDA_INSTALLER_NAME_TEMPLATE = "Miniconda{major}-{minor}-{os}-{arch}{ext}"

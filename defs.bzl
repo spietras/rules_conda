@@ -5,7 +5,7 @@ load(":toolchain.bzl", "toolchain_rule")
 
 CONDA_REPO_NAME = "conda"
 CONDA_DIR = "conda"
-DEFAULT_CONDA_VERSION = "4.8.4"
+DEFAULT_CONDA_VERSION = "4.10.3"
 DEFAULT_ENV_NAME = "my_env"
 DEFAULT_TOOLCHAIN_REPO_NAME = "conda_tools"
 DEFAULT_TOOLCHAIN_NAME = "python_toolchain"

@@ -1,9 +1,9 @@
 channels:
   - conda-forge
 dependencies:
-  - python==3.8.5
-  - pip==20.2.2
-  - numpy==1.19.1
+  - python==3.9.7
+  - pip==21.2.4
+  - numpy==1.21.2
   - pip:
-    - scipy==1.5.2
-    - git+https://github.com/bast/somepackage.git#egg=somepackage
+      - scipy==1.7.1
+      - git+https://github.com/bast/somepackage.git#egg=somepackage

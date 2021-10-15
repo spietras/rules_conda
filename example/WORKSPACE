@@ -3,8 +3,8 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 RULES_PYTHON_NAME = "rules_python"
-RULES_PYTHON_TAG = "0.1.0"
-RULES_PYTHON_SHA = "b6d46438523a3ec0f3cead544190ee13223a52f6a6765a29eae7b7cc24cc83a0"
+RULES_PYTHON_TAG = "0.4.0"
+RULES_PYTHON_SHA = "954aa89b491be4a083304a2cb838019c8b8c3720a7abb9c4cb81ac7a24230cea"
 RULES_PYTHON_REPO = "bazelbuild"
 RULES_PYTHON_ARCHIVE = "tar.gz"
 RULES_PYTHON_URL = "https://github.com/{repo}/{name}/releases/download/{tag}/{name}-{tag}.{archive}".format(repo=RULES_PYTHON_REPO, name=RULES_PYTHON_NAME, tag=RULES_PYTHON_TAG, archive=RULES_PYTHON_ARCHIVE)
@@ -42,7 +42,7 @@ load("@rules_conda//:defs.bzl", "load_conda", "conda_create", "register_toolchai
 
 # download and install conda
 load_conda(
-    version = "4.8.4",  # optional, defaults to 4.8.4
+    version = "4.10.3",  # optional, defaults to 4.10.3
     quiet = False  # print output
 )
 
