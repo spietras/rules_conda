@@ -86,8 +86,8 @@ conda_create_rule = repository_rule(
             doc = "Timeout in seconds for each execute action",
         ),
         "clean": attr.bool(
-            default = True,
-            doc = "False if conda cache should not be cleaned",
+            default = False,
+            doc = "True if conda cache should be cleaned",
         ),
     },
 )
