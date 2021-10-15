@@ -1,0 +1,63 @@
+name: Running tests
+
+on:
+  push:
+    # trigger only on main branch
+    branches:
+      - main
+    # trigger only on changes to the following files
+    paths:
+      - "*.bzl"
+      - "BUILD"
+      - "WORKSPACE"
+      - "tests/**"
+      - ".github/workflows/test.yml"
+  pull_request:
+    # trigger only on main branch
+    branches:
+      - main
+    # trigger only on changes to the following files
+    paths:
+      - "*.bzl"
+      - "BUILD"
+      - "WORKSPACE"
+      - "tests/**"
+      - ".github/workflows/test.yml"
+
+# env for all jobs
+env:
+  BAZEL_CACHE_DIR: ~/.cache/bazel
+  # increase this value to manually reset cache
+  CACHE_NUMBER: 0
+
+jobs:
+  test:
+    name: Run tests
+    strategy:
+      # don't stop all tests if one fails
+      fail-fast: false
+      matrix:
+        # better to use pinned versions here
+        config:
+          - { os: ubuntu-20.04, shell: bash -l }
+          - { os: macos-10.15, shell: bash -l }
+          - { os: windows-2019, shell: cmd /C CALL }
+    runs-on: ${{ matrix.config.os }}
+    defaults:
+      run:
+        shell: ${{ matrix.config.shell }} {0}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup bazelisk
+        uses: bazelbuild/setup-bazelisk@v1
+        with:
+          bazelisk-version: 1.10.1
+      - name: Cache bazel
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.BAZEL_CACHE_DIR }}
+          key: ${{ runner.os }}-bazel-${{ env.CACHE_NUMBER }}
+      - name: Run tests
+        working-directory: tests
+        run: bazel test --test_output=all --test_arg=--verbose --test_arg=-rA ...
