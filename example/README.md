@@ -6,13 +6,13 @@ Simple Python app demonstrating usage of `rules_conda`
 
 Linux:
 
-- `glibc`
-- any `python`
-- any C compiler (like `gcc`)
+- [`glibc`](https://stackoverflow.com/a/47191900/12861599)
+- [any `python`](https://github.com/bazelbuild/bazel/issues/544#issuecomment-495307020)
+- [any C compiler (like `gcc`)](https://github.com/bazelbuild/bazel/issues/8751)
 
 Windows:
 
-- as far as I'm concerned: nothing
+- not sure
 
 ## Usage
 
