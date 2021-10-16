@@ -71,5 +71,12 @@ extra:
     - icon: material/github
       link: https://github.com/spietras/rules_conda
 
+extra_css:
+  - assets/extra.css
+
 nav:
   - Home: index.md
+  - Usage:
+      - Example: usage/example.md
+      - API: usage/api.md
+      - Issues: usage/issues.md
