@@ -23,8 +23,8 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "rules_conda",
-    sha256 = "8298379474beb05f815afc33a42eb1732f8ebdab3aa639569473eae75e6e072b",
-    url = "https://github.com/spietras/rules_conda/releases/download/0.0.5/rules_conda-0.0.5.zip"
+    sha256 = "c5ad3a077bddff381790d64dd9cc1516b8133c1d695eb3eff4fed04a39dc4522",
+    url = "https://github.com/spietras/rules_conda/releases/download/0.0.6/rules_conda-0.0.6.zip"
 )
 
 load("@rules_conda//:defs.bzl", "conda_create", "load_conda", "register_toolchain")
