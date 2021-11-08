@@ -29,10 +29,17 @@ CONDA_INSTALLER_FLAGS = {
 MINIFORGE_MAJOR = "3"
 MINIFORGE_MINOR = "4.10.3-7"
 MINIFORGE_SHA = {
-    # TODO(jiawen - DONOTMERGE): These don't seem to be verified. Add paths for other OSs and archs before submitting.
+    "Windows": {
+        "x86_64": "e3b1e7c5a02315c90bbb20d27614e00183ba8247594c57fb1f0484ccf5f9471c",
+    },
     "MacOSX": {
-        "x86_64": "786de9721f43e2c7d2803144c635f5f6e4823483536dc141ccd82dbb927cd508",
-        "arm64": "786de9721f43e2c7d2803144c635f5f6e4823483536dc141ccd82dbb927cd508",
+        "x86_64": "a25c1b381b20873ed856ce675a7a2ccf48f1d6782a5cdce9f06496e6ffa7883f",
+        "arm64": "3cd1f11743f936ba522709eb7a173930c299ac681671a909b664222329a56290",
+    },
+    "Linux": {
+        "x86_64": "4de9b7dcc9b2761136f4a7a42a8b2ea06ae2ebc61d865c9fca0db3d6c90b569d",
+        "aarch64": "d597961defe8c7889f3e924d0dc7624fab2c8845abccdd8ffa8da8018ff3dc6e",
+        "ppc64le": "8825827240c0d06413876055bf3a04d8704f0e5ac773692a352502862dce7aa5",
     },
 }
 
@@ -65,15 +72,22 @@ def _download_conda(rctx):
     arch = get_arch(rctx)
     ext = INSTALLER_SCRIPT_EXT_MAP[os]
 
-    #url = CONDA_BASE_URL + CONDA_INSTALLER_NAME_TEMPLATE.format(major = CONDA_MAJOR, minor = CONDA_MINOR, os = os, arch = arch, ext = ext)
-    url = MINIFORGE_BASE_URL + MINIFORGE_INSTALLER_NAME_TEMPLATE.format(major = MINIFORGE_MAJOR, minor = MINIFORGE_MINOR, os = os, arch = arch, ext = ext)
+    if rctx.attr.installer == "miniconda":
+        url = CONDA_BASE_URL + CONDA_INSTALLER_NAME_TEMPLATE.format(major = CONDA_MAJOR, minor = CONDA_MINOR, os = os, arch = arch, ext = ext)
+        sha = CONDA_SHA
+    elif rctx.attr.installer == "miniforge":
+        url = MINIFORGE_BASE_URL + MINIFORGE_INSTALLER_NAME_TEMPLATE.format(major = MINIFORGE_MAJOR, minor = MINIFORGE_MINOR, os = os, arch = arch, ext = ext)
+        sha = MINIFORGE_SHA
+    else:
+        fail("installer must be either miniconda or miniforge")
+
     output = "{}/install{}".format(INSTALLER_DIR, ext)
 
     # download from url to output
     rctx.download(
         url = url,
         output = output,
-        sha256 = MINIFORGE_SHA[os][arch],
+        sha256 = sha[os][arch],
         executable = True,
     )
     return output
@@ -137,6 +151,10 @@ load_conda_rule = repository_rule(
         "timeout": attr.int(
             default = EXECUTE_TIMEOUT,
             doc = "Timeout in seconds for each execute action",
+        ),
+        "installer": attr.string(
+            default = "miniconda",
+            doc = 'Installer to use, either "miniconda" or "miniforge". Note that miniconda and miniforge have different OS/arch support.',
         ),
     },
 )
