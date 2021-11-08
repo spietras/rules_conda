@@ -29,10 +29,10 @@ http_archive(
 ### RULES_CONDA ###
 
 # use this instead of http_archive if you cloned the repo and want to use the local version
-#local_repository(
-#    name = "rules_conda",
-#    path = "../",
-#)
+local_repository(
+    name = "rules_conda",
+    path = "../",
+)
 
 RULES_CONDA_NAME = "rules_conda"
 
@@ -52,11 +52,11 @@ RULES_CONDA_URL = "https://github.com/{repo}/{name}/releases/download/{tag}/{nam
 )
 
 # use http_archive rule to load rules_conda repo
-http_archive(
-    name = RULES_CONDA_NAME,
-    sha256 = RULES_CONDA_SHA,
-    url = RULES_CONDA_URL,
-)
+#http_archive(
+#    name = RULES_CONDA_NAME,
+#    sha256 = RULES_CONDA_SHA,
+#    url = RULES_CONDA_URL,
+#)
 
 load("@rules_conda//:defs.bzl", "conda_create", "load_conda", "register_toolchain")
 
@@ -86,6 +86,6 @@ conda_create(
 
 # register pythons from environment as toolchain
 register_toolchain(
-    py2_env = "py2_env",  # python2 is optional
+    # py2_env = "py2_env",  # python2 is optional
     py3_env = "py3_env",
 )
