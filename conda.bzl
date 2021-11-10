@@ -20,7 +20,7 @@ CONDA_SHA = {
 }
 CONDA_INSTALLER_NAME_TEMPLATE = "Miniconda{major}-{minor}-{os}-{arch}{ext}"
 CONDA_BASE_URL = "https://repo.anaconda.com/miniconda/"
-CONDA_INSTALLER_FLAGS = {
+INSTALLER_FLAGS = {
     "Windows": ["/InstallationType=JustMe", "/AddToPath=0", "/RegisterPython=0", "/S", "/D={}"],
     "MacOSX": ["-b", "-f", "-p", "{}"],
     "Linux": ["-b", "-f", "-p", "{}"],
@@ -43,10 +43,8 @@ MINIFORGE_SHA = {
     },
 }
 
-# TODO(jiawen): It's trivial to replace "Miniforge" with "Mambaforge".
 MINIFORGE_INSTALLER_NAME_TEMPLATE = "{minor}/Miniforge{major}-{minor}-{os}-{arch}{ext}"
 MINIFORGE_BASE_URL = "https://github.com/conda-forge/miniforge/releases/download/"
-MINIFORGE_INSTALLER_FLAGS = CONDA_INSTALLER_FLAGS
 
 INSTALLER_DIR = "installer"
 
@@ -57,7 +55,7 @@ exports_files(['{conda}'])
 
 def _get_installer_flags(rctx, dir):
     os = get_os(rctx)
-    flags = CONDA_INSTALLER_FLAGS[os]
+    flags = INSTALLER_FLAGS[os]
 
     # insert directory
     dir = rctx.path(dir)
@@ -144,6 +142,10 @@ load_conda_rule = repository_rule(
             mandatory = True,
             doc = "Conda version to install",
         ),
+        "installer": attr.string(
+            default = "miniconda",
+            doc = 'Installer to use, either "miniconda" or "miniforge". Note that miniconda and miniforge have different OS/arch support.',
+        ),
         "quiet": attr.bool(
             default = True,
             doc = "False if conda output should be shown",
@@ -151,10 +153,6 @@ load_conda_rule = repository_rule(
         "timeout": attr.int(
             default = EXECUTE_TIMEOUT,
             doc = "Timeout in seconds for each execute action",
-        ),
-        "installer": attr.string(
-            default = "miniconda",
-            doc = 'Installer to use, either "miniconda" or "miniforge". Note that miniconda and miniforge have different OS/arch support.',
         ),
     },
 )

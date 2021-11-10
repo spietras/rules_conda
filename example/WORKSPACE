@@ -86,6 +86,6 @@ conda_create(
 
 # register pythons from environment as toolchain
 register_toolchain(
-    #py2_env = "py2_env",  # python2 is optional
+    py2_env = "py2_env",  # python2 is optional
     py3_env = "py3_env",
 )
