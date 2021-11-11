@@ -1,0 +1,47 @@
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+RULES_PYTHON_NAME = "rules_python"
+
+RULES_PYTHON_TAG = "0.4.0"
+
+RULES_PYTHON_SHA = "954aa89b491be4a083304a2cb838019c8b8c3720a7abb9c4cb81ac7a24230cea"
+
+RULES_PYTHON_REPO = "bazelbuild"
+
+RULES_PYTHON_ARCHIVE = "tar.gz"
+
+RULES_PYTHON_URL = "https://github.com/{repo}/{name}/releases/download/{tag}/{name}-{tag}.{archive}".format(
+    name = RULES_PYTHON_NAME,
+    archive = RULES_PYTHON_ARCHIVE,
+    repo = RULES_PYTHON_REPO,
+    tag = RULES_PYTHON_TAG,
+)
+
+http_archive(
+    name = RULES_PYTHON_NAME,
+    sha256 = RULES_PYTHON_SHA,
+    url = RULES_PYTHON_URL,
+)
+
+local_repository(
+    name = "rules_conda",
+    path = "../../../",
+)
+
+load("@rules_conda//:defs.bzl", "conda_create", "load_conda", "register_toolchain")
+
+load_conda(
+    quiet = False,
+)
+
+conda_create(
+    name = "test_env",
+    timeout = 600,
+    clean = False,
+    environment = "@//:environment.yml",
+    quiet = False,
+)
+
+register_toolchain(
+    py3_env = "test_env",
+)

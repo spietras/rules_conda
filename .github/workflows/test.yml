@@ -58,9 +58,15 @@ jobs:
         with:
           path: ${{ env.BAZEL_CACHE_DIR }}
           key: ${{ runner.os }}-bazel-${{ env.CACHE_NUMBER }}
-      - name: Run miniconda tests
-        working-directory: tests/miniconda
+      - name: Test miniconda with conda
+        working-directory: tests/miniconda/conda
         run: bazel test --test_output=all --test_arg=--verbose --test_arg=-rA ...
-      - name: Run miniforge tests
-        working-directory: tests/miniforge
+      - name: Test miniconda with mamba
+        working-directory: tests/miniconda/mamba
+        run: bazel test --test_output=all --test_arg=--verbose --test_arg=-rA ...
+      - name: Test miniforge with conda
+        working-directory: tests/miniforge/conda
+        run: bazel test --test_output=all --test_arg=--verbose --test_arg=-rA ...
+      - name: Test miniforge with mamba
+        working-directory: tests/miniforge/mamba
         run: bazel test --test_output=all --test_arg=--verbose --test_arg=-rA ...

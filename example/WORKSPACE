@@ -60,28 +60,36 @@ http_archive(
 
 load("@rules_conda//:defs.bzl", "conda_create", "load_conda", "register_toolchain")
 
+USE_MAMBA = True
+
+CLEAN = True
+
 # download and install conda
 load_conda(
+    conda_version = "4.10.3",  # optional, defaults to 4.10.3
+    install_mamba = USE_MAMBA,
+    mamba_version = "0.17.0",  # optional, defaults to 0.17.0
     quiet = False,  # use True to hide conda output
-    version = "4.10.3",  # optional, defaults to 4.10.3
 )
 
 # create environment with python2
 conda_create(
     name = "py2_env",
     timeout = 600,  # each execute action can take up to 600 seconds
-    clean = False,  # use True if you want to clean conda cache (less space taken, but slower subsequent builds)
+    clean = CLEAN,  # use True if you want to clean conda cache (less space taken, but slower subsequent builds)
     environment = "@//third_party/conda:py2_environment.yml",  # label pointing to environment.yml file
     quiet = False,  # use True to hide conda output
+    use_mamba = USE_MAMBA, # use True to use mamba, which a faster drop-in replacement for conda
 )
 
 # create environment with python3
 conda_create(
     name = "py3_env",
     timeout = 600,  # each execute action can take up to 600 seconds
-    clean = False,  # use True if you want to clean conda cache (less space taken, but slower subsequent builds)
+    clean = CLEAN,  # use True if you want to clean conda cache (less space taken, but slower subsequent builds)
     environment = "@//third_party/conda:py3_environment.yml",  # label pointing to environment.yml file
     quiet = False,  # use True to hide conda output
+    use_mamba = USE_MAMBA, # use True to use mamba, which a faster drop-in replacement for conda
 )
 
 # register pythons from environment as toolchain

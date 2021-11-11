@@ -13,6 +13,19 @@ py_runtime(
 )
 """
 
+def _label_from_condabin(rctx, exe_name):
+    return Label("@{}//:{}/condabin/{}{}".format(
+        rctx.attr.conda_repo,
+        rctx.attr.conda_dir,
+        exe_name,
+        CONDA_EXT_MAP[get_os(rctx)],
+    ))
+
+def _user_chosen_executable(rctx):
+    if rctx.attr.use_mamba:
+        return _label_from_condabin(rctx, "mamba")
+    return _label_from_condabin(rctx, "conda")
+
 # clean conda caches and unused packages
 def _clean(rctx, executable):
     rctx.report_progress("Cleaning up")
@@ -23,18 +36,30 @@ def _clean(rctx, executable):
     if result.return_code:
         fail("Failure cleaning up.\nstdout: {}\nstderr: {}".format(result.stdout, result.stderr))
 
+def _create_empty_environment(rctx, executable, env_name):
+    rctx.report_progress("Creating empty conda environment, to be populated afterwards")
+    args = [rctx.path(executable), "create", "-y", "-p", "./{}".format(env_name)]
+    result = rctx.execute(args, quiet = rctx.attr.quiet, timeout = rctx.attr.timeout)
+    if result.return_code:
+        fail("Failure creating empty environment.\nstdout: {}\nstderr: {}".format(result.stdout, result.stderr))
+
+def _update_environment(rctx, executable, env_name, env_file):
+    rctx.report_progress("Updating empty conda environment to populate it")
+    args = [rctx.path(executable), "env", "update", "-f", env_file, "-p", "./{}".format(env_name)]
+    result = rctx.execute(args, quiet = rctx.attr.quiet, timeout = rctx.attr.timeout)
+    if result.return_code:
+        fail("Failure updating environment.\nstdout: {}\nstderr: {}".format(result.stdout, result.stderr))
+
 # create new local conda environment from file
 def _create_environment(rctx, executable, env_name):
     rctx.report_progress("Creating conda environment")
 
+    executable = _user_chosen_executable(rctx)
     # path to env file as string
     env_file = str(rctx.path(rctx.attr.environment))
 
-    args = [rctx.path(executable), "env", "create", "-f", env_file, "-p", "./{}".format(env_name)]
-
-    result = rctx.execute(args, quiet = rctx.attr.quiet, timeout = rctx.attr.timeout)
-    if result.return_code:
-        fail("Failure creating environment.\nstdout: {}\nstderr: {}".format(result.stdout, result.stderr))
+    _create_empty_environment(rctx, executable, env_name)
+    _update_environment(rctx, executable, env_name, env_file)
 
 # check if python2 or python3 has been installed
 def _get_py_major(rctx, env_path, interpreter_path):
@@ -59,8 +84,7 @@ def _create_env_build_file(rctx, env_name):
     )
 
 def _conda_create_impl(rctx):
-    conda_label = Label("@{}//:{}/condabin/conda{}".format(rctx.attr.conda_repo, rctx.attr.conda_dir, CONDA_EXT_MAP[get_os(rctx)]))
-    executable = str(rctx.path(conda_label))
+    executable = _user_chosen_executable(rctx)
     env_name = rctx.name
     _create_environment(rctx, executable, env_name)
     if rctx.attr.clean:
@@ -80,6 +104,10 @@ conda_create_rule = repository_rule(
         "quiet": attr.bool(
             default = True,
             doc = "False if conda output should be shown",
+        ),
+        "use_mamba": attr.bool(
+            default = False,
+            doc = "True if mamba should be used",
         ),
         "timeout": attr.int(
             default = EXECUTE_TIMEOUT,
