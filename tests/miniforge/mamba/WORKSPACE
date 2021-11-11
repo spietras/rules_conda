@@ -31,18 +31,18 @@ local_repository(
 load("@rules_conda//:defs.bzl", "conda_create", "load_conda", "register_toolchain")
 
 load_conda(
-    installer = "miniforge",
     install_mamba = True,
+    installer = "miniforge",
     quiet = False,
 )
 
 conda_create(
     name = "test_env",
     timeout = 600,
-    use_mamba = True,
     clean = False,
     environment = "@//:environment.yml",
     quiet = False,
+    use_mamba = True,
 )
 
 register_toolchain(

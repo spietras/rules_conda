@@ -55,6 +55,7 @@ def _create_environment(rctx, executable, env_name):
     rctx.report_progress("Creating conda environment")
 
     executable = rctx.path(_user_chosen_executable(rctx))
+
     # path to env file as string
     env_file = str(rctx.path(rctx.attr.environment))
 

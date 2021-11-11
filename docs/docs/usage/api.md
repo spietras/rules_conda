@@ -10,9 +10,10 @@
 
     | Name            | Description                                                                                | Default                |
     | --------------- | ------------------------------------------------------------------------------------------ | ---------------------- |
+    | `conda_version` | Version of `conda` to download                                                             | `4.10.3`               |
     | `installer`     | Which `conda` installer to download, either `miniconda` or `miniforge`                     | `miniconda`            |
-    | `install_mamba` | Whether to install `mamba`, which is a faster drop-in replacement for `conda`              | `miniconda`            |
-    | `version`       | Version of `conda` to download                                                             | `4.10.3`               |
+    | `install_mamba` | Whether to install `mamba`, which is a faster drop-in replacement for `conda`              | `False`                |
+    | `mamba_version` | Version of `conda` to install                                                              | `0.17.0`               |
     | `quiet`         | `True` if `conda` output should be hidden                                                  | `True`                 |
     | `timeout`       | How many seconds each execute action can take                                              | `3600`                 |
 
