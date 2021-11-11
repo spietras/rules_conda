@@ -159,6 +159,7 @@ load_conda_rule = repository_rule(
         "installer": attr.string(
             default = "miniconda",
             doc = 'Installer to use, either "miniconda" or "miniforge". Note that miniconda and miniforge have different OS/arch support.',
+	),
         "install_mamba": attr.bool(
             default = False,
             doc = "False if mamba should not be installed",
