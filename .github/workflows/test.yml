@@ -60,4 +60,6 @@ jobs:
           key: ${{ runner.os }}-bazel-${{ env.CACHE_NUMBER }}
       - name: Run tests
         working-directory: tests/miniconda
-        run: bazel test --test_output=all --test_arg=--verbose --test_arg=-rA ...
+        run: |
+          bazel test --test_output=all --test_arg=--verbose --test_arg=-rA ...
+          bazel test --test_output=all --test_arg=--verbose --test_arg=-rA --extra_toolchains=@test2//:test2_env_toolchain :test2
