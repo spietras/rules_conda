@@ -25,7 +25,7 @@ http_archive(
 
 local_repository(
     name = "rules_conda",
-    path = "../../",
+    path = "../../../",
 )
 
 load("@rules_conda//:defs.bzl", "conda_create", "load_conda", "register_toolchain")
