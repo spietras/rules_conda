@@ -9,14 +9,16 @@ DEFAULT_CONDA_VERSION = "4.10.3"
 DEFAULT_ENV_NAME = "my_env"
 DEFAULT_TOOLCHAIN_REPO_NAME = "conda_tools"
 DEFAULT_TOOLCHAIN_NAME = "python_toolchain"
+DEFAULT_MAMBA_VERSION = "0.17.0"
 
 # download and install conda
-def load_conda(version = DEFAULT_CONDA_VERSION, **kwargs):
+def load_conda(conda_version = DEFAULT_CONDA_VERSION, mamba_version = DEFAULT_MAMBA_VERSION, **kwargs):
     maybe(
         load_conda_rule,
         CONDA_REPO_NAME,
         conda_dir = CONDA_DIR,
-        version = version,
+        conda_version = conda_version,
+        mamba_version = mamba_version,
         **kwargs
     )
 

@@ -110,9 +110,21 @@ def _install_conda(rctx, installer):
         fail("Failure installing conda.\nstdout: {}\nstderr: {}".format(result.stdout, result.stderr))
     return "{}/condabin/conda{}".format(rctx.attr.conda_dir, CONDA_EXT_MAP[os])
 
+def _install_mamba(rctx, executable):
+    rctx.report_progress("Installing mamba")
+    mamba_with_version = "mamba={}".format(rctx.attr.mamba_version)
+
+    # `-n base` is necessary so that mamba is installed to the conda in the bazel cache.
+    # If we omit `-n base`, then mamba can get installed to the user's environment i.e. ~/anaconda3 which breaks
+    # the hermetic nature of the build.
+    args = [rctx.path(executable), "install", "-n", "base", "-c", "conda-forge", mamba_with_version, "-y"]
+    result = rctx.execute(args, quiet = rctx.attr.quiet, working_directory = rctx.attr.conda_dir, timeout = rctx.attr.timeout)
+    if result.return_code:
+        fail("Failure when installing mamba.\nstdout: {}\nstderr: {}".format(result.stdout, result.stderr))
+
 # use conda to update itself
 def _update_conda(rctx, executable):
-    conda_with_version = "conda={}".format(rctx.attr.version)
+    conda_with_version = "conda={}".format(rctx.attr.conda_version)
     args = [rctx.path(executable), "install", conda_with_version, "-y"]
 
     # update conda itself
@@ -130,21 +142,31 @@ def _create_conda_build_file(rctx, executable):
 
 def _load_conda_impl(rctx):
     installer = _download_conda(rctx)
-    executable = _install_conda(rctx, installer)
-    _update_conda(rctx, executable)
-    _create_conda_build_file(rctx, executable)
+    conda_executable = _install_conda(rctx, installer)
+    _update_conda(rctx, conda_executable)
+    if rctx.attr.install_mamba:
+        _install_mamba(rctx, conda_executable)
+    _create_conda_build_file(rctx, conda_executable)
 
 load_conda_rule = repository_rule(
     _load_conda_impl,
     attrs = {
         "conda_dir": attr.string(mandatory = True),
-        "version": attr.string(
+        "conda_version": attr.string(
             mandatory = True,
             doc = "Conda version to install",
         ),
         "installer": attr.string(
             default = "miniconda",
             doc = 'Installer to use, either "miniconda" or "miniforge". Note that miniconda and miniforge have different OS/arch support.',
+        ),
+        "install_mamba": attr.bool(
+            default = False,
+            doc = "False if mamba should not be installed",
+        ),
+        "mamba_version": attr.string(
+            mandatory = True,
+            doc = "Mamba version to install",
         ),
         "quiet": attr.bool(
             default = True,

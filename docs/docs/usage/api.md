@@ -8,12 +8,14 @@
 
     **Parameters:**
 
-    | Name          | Description                                                                                | Default                |
-    | ------------- | ------------------------------------------------------------------------------------------ | ---------------------- |
-    | `installer`   | Which `conda` installer to download, either `miniconda` or `miniforge`                     | `miniconda`            |
-    | `version`     | Version of `conda` to download                                                             | `4.10.3`               |
-    | `quiet`       | `True` if `conda` output should be hidden                                                  | `True`                 |
-    | `timeout`     | How many seconds each execute action can take                                              | `3600`                 |
+    | Name            | Description                                                                                | Default                |
+    | --------------- | ------------------------------------------------------------------------------------------ | ---------------------- |
+    | `conda_version` | Version of `conda` to download                                                             | `4.10.3`               |
+    | `installer`     | Which `conda` installer to download, either `miniconda` or `miniforge`                     | `miniconda`            |
+    | `install_mamba` | Whether to install `mamba`, which is a faster drop-in replacement for `conda`              | `False`                |
+    | `mamba_version` | Version of `conda` to install                                                              | `0.17.0`               |
+    | `quiet`         | `True` if `conda` output should be hidden                                                  | `True`                 |
+    | `timeout`       | How many seconds each execute action can take                                              | `3600`                 |
 
 ## `conda_create`
 
@@ -23,13 +25,14 @@
 
     **Parameters:**
 
-    | Name          | Description                                                                                | Default                |
-    | ------------- | ------------------------------------------------------------------------------------------ | ---------------------- |
-    | `environment` | label pointing to environment configuration file (typically named `environment.yml`)       |                        |
-    | `name`        | Name of the environment                                                                    | `my_env`               |
-    | `quiet`       | `True` if `conda` output should be hidden                                                  | `True`                 |
-    | `timeout`     | How many seconds each execute action can take                                              | `3600`                 |
-    | `clean`       | `True` if `conda` cache should be cleaned (less space taken, but slower subsequent builds) | `False`                |
+    | Name          | Description                                                                                                      | Default                |
+    | ------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------------- |
+    | `environment` | label pointing to environment configuration file (typically named `environment.yml`)                             |                        |
+    | `name`        | Name of the environment                                                                                          | `my_env`               |
+    | `quiet`       | `True` if `conda` output should be hidden                                                                        | `True`                 |
+    | `timeout`     | How many seconds each execute action can take                                                                    | `3600`                 |
+    | `clean`       | `True` if `conda` cache should be cleaned (less space taken, but slower subsequent builds)                       | `False`                |
+    | `use_mamba`   | Whether to use `mamba` to create the `conda` environment. If this is `True`, `install_mamba` must also be `True` | `False`                |
 
 ## `register_toolchain`
 

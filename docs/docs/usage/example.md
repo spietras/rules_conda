@@ -33,6 +33,7 @@ load_conda(
     installer = "miniconda",  # "miniconda" or "miniforge", defaults to "miniconda"
     quiet = False,  # use True to hide conda output
     version = "4.10.3",  # optional, defaults to 4.10.3
+    install_mamba = False, # use True to use mamba, which a faster drop-in replacement for conda
 )
 
 conda_create(
@@ -41,6 +42,7 @@ conda_create(
     clean = False,  # use True if you want to clean conda cache (less space taken, but slower subsequent builds)
     environment = "@//:environment.yml",  # label pointing to environment.yml file
     quiet = False,  # use True to hide conda output
+    use_mamba = False, # use True to use mamba, which a faster drop-in replacement for conda
 )
 
 register_toolchain(
