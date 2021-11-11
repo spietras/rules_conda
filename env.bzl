@@ -30,7 +30,7 @@ def _user_chosen_executable(rctx):
 def _clean(rctx, executable):
     rctx.report_progress("Cleaning up")
 
-    args = [rctx.path(executable), "clean", "-a", "-y"]
+    args = [executable, "clean", "-a", "-y"]
 
     result = rctx.execute(args, quiet = rctx.attr.quiet, timeout = rctx.attr.timeout)
     if result.return_code:
@@ -38,14 +38,14 @@ def _clean(rctx, executable):
 
 def _create_empty_environment(rctx, executable, env_name):
     rctx.report_progress("Creating empty conda environment, to be populated afterwards")
-    args = [rctx.path(executable), "create", "-y", "-p", "./{}".format(env_name)]
+    args = [executable, "create", "-y", "-p", "./{}".format(env_name)]
     result = rctx.execute(args, quiet = rctx.attr.quiet, timeout = rctx.attr.timeout)
     if result.return_code:
         fail("Failure creating empty environment.\nstdout: {}\nstderr: {}".format(result.stdout, result.stderr))
 
 def _update_environment(rctx, executable, env_name, env_file):
     rctx.report_progress("Updating empty conda environment to populate it")
-    args = [rctx.path(executable), "env", "update", "-f", env_file, "-p", "./{}".format(env_name)]
+    args = [executable, "env", "update", "-f", env_file, "-p", "./{}".format(env_name)]
     result = rctx.execute(args, quiet = rctx.attr.quiet, timeout = rctx.attr.timeout)
     if result.return_code:
         fail("Failure updating environment.\nstdout: {}\nstderr: {}".format(result.stdout, result.stderr))
@@ -54,7 +54,7 @@ def _update_environment(rctx, executable, env_name, env_file):
 def _create_environment(rctx, executable, env_name):
     rctx.report_progress("Creating conda environment")
 
-    executable = _user_chosen_executable(rctx)
+    executable = rctx.path(_user_chosen_executable(rctx))
     # path to env file as string
     env_file = str(rctx.path(rctx.attr.environment))
 
