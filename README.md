@@ -58,7 +58,7 @@ After that, all Python targets will use the environments specified in `register_
 ## Who should use this?
 
 These rules allow you to download and install `conda`, create `conda` environments and register Python toolchain from environments.
-This means you can achieve truly reproducible and hermetic local python environments.
+This means you can achieve truly reproducible and hermetic local Python environments.
 
 Pros:
 

@@ -13,7 +13,7 @@ WORKSPACE
 
 First get familiar with [`rules_python`](https://github.com/bazelbuild/rules_python).
 You should uses these rules to configure your Python project to work with Bazel.
-I recommend that you first set everything up so that it works with your local python.
+I recommend that you first set everything up so that it works with your local Python.
 After that works you can move to using `rules_conda` for creating environments automatically.
 
 To use `rules_conda` you need to add that to your `WORKSPACE` file:
@@ -30,6 +30,7 @@ http_archive(
 load("@rules_conda//:defs.bzl", "conda_create", "load_conda", "register_toolchain")
 
 load_conda(
+    installer = "miniconda",  # "miniconda" or "miniforge", defaults to "miniconda"
     quiet = False,  # use True to hide conda output
     version = "4.10.3",  # optional, defaults to 4.10.3
 )
@@ -47,7 +48,7 @@ register_toolchain(
 )
 ```
 
-This will download `conda`, create your environment and register it so that all python targets can use it by default.
+This will download `conda`, create your environment and register it so that all Python targets can use it by default.
 
 Now if you configured everything correctly, you can run:
 
