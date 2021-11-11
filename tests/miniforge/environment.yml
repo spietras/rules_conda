@@ -1,0 +1,6 @@
+channels:
+  - default
+  - conda-forge
+dependencies:
+  - python==3.9.7
+  - pytest==6.2.4

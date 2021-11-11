@@ -35,6 +35,7 @@ http_archive(
 load("@rules_conda//:defs.bzl", "conda_create", "load_conda", "register_toolchain")
 
 load_conda(
+    installer = "miniconda",  # "miniconda" or "miniforge", defaults to "miniconda"
     quiet = False,  # use True to hide conda output
     version = "4.10.3",  # optional, defaults to 4.10.3
 )
@@ -57,7 +58,7 @@ After that, all Python targets will use the environments specified in `register_
 ## Who should use this?
 
 These rules allow you to download and install `conda`, create `conda` environments and register Python toolchain from environments.
-This means you can achieve truly reproducible and hermetic local python environments.
+This means you can achieve truly reproducible and hermetic local Python environments.
 
 Pros:
 

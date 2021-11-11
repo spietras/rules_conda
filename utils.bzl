@@ -41,6 +41,8 @@ def get_arch_mac(rctx):
     arch = rctx.execute(["uname", "-m"]).stdout.strip("\n")
     if arch in ["x86_64", "amd64"]:
         return "x86_64"
+    elif arch in ["arm64"]:
+        return "arm64"
     fail("Unsupported architecture: {}".format(arch))
 
 def get_arch_linux(rctx):

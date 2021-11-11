@@ -10,6 +10,7 @@
 
     | Name          | Description                                                                                | Default                |
     | ------------- | ------------------------------------------------------------------------------------------ | ---------------------- |
+    | `installer`   | Which `conda` installer to download, either `miniconda` or `miniforge`                     | `miniconda`            |
     | `version`     | Version of `conda` to download                                                             | `4.10.3`               |
     | `quiet`       | `True` if `conda` output should be hidden                                                  | `True`                 |
     | `timeout`     | How many seconds each execute action can take                                              | `3600`                 |
