@@ -42,6 +42,23 @@ conda_create(
     quiet = False,
 )
 
+conda_create(
+    name = "test2_env",
+    timeout = 600,
+    clean = False,
+    environment = "@//:test2_env.yml",
+    quiet = False,
+)
+
 register_toolchain(
     py3_env = "test_env",
+)
+
+# Registers a toolchain "@test2//:test2_env_toolchain".
+# The name argument is required because `register_toolchain` constructs a single external repository
+# and writes a BUILD file into it.
+register_toolchain(
+    name = "test2",
+    py3_env = "test2_env",
+    toolchain_name = "test2_env_toolchain",
 )

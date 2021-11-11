@@ -6,7 +6,7 @@ load("@bazel_tools//tools/python:toolchain.bzl", "py_runtime_pair")
 py_runtime_pair(
     name = "runtimes",
     py2_runtime = {py2_runtime},
-    py3_runtime = {py3_runtime}
+    py3_runtime = {py3_runtime},
 )
 
 toolchain(
@@ -20,9 +20,11 @@ def _toolchain_impl(rctx):
     py2_runtime = rctx.attr.py2_runtime
     py3_runtime = rctx.attr.py3_runtime
 
-    # python2_runtime can be None, in this case insert string None
-    py2_runtime_value = "\"{}\"".format(py2_runtime) if py2_runtime else "None"
-    py3_runtime_value = "\"{}\"".format(py3_runtime)
+    # Convert labels to strings to put into `BUILD_FILE_CONTENT`.
+
+    # python2_runtime can be None, in which case the string should be "None".
+    py2_runtime_value = '"{}"'.format(py2_runtime) if py2_runtime else "None"
+    py3_runtime_value = '"{}"'.format(py3_runtime)
 
     # create BUILD file with toolchain definition
     rctx.file(

@@ -1,0 +1,7 @@
+# Same as environment.yml except pytest is pinned at 6.2.2.
+channels:
+  - default
+  - conda-forge
+dependencies:
+  - python==3.9.7
+  - pytest==6.2.2
