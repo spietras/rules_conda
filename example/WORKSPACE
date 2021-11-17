@@ -1,62 +1,25 @@
 ### RULES_PYTHON ###
-
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-
-RULES_PYTHON_NAME = "rules_python"
-
-RULES_PYTHON_TAG = "0.5.0"
-
-RULES_PYTHON_SHA = "cd6730ed53a002c56ce4e2f396ba3b3be262fd7cb68339f0377a45e8227fe332"
-
-RULES_PYTHON_REPO = "bazelbuild"
-
-RULES_PYTHON_ARCHIVE = "tar.gz"
-
-RULES_PYTHON_URL = "https://github.com/{repo}/{name}/releases/download/{tag}/{name}-{tag}.{archive}".format(
-    name = RULES_PYTHON_NAME,
-    archive = RULES_PYTHON_ARCHIVE,
-    repo = RULES_PYTHON_REPO,
-    tag = RULES_PYTHON_TAG,
-)
-
-# use http_archive rule to load rules_python repo
 http_archive(
-    name = RULES_PYTHON_NAME,
-    sha256 = RULES_PYTHON_SHA,
-    url = RULES_PYTHON_URL,
+    name = "rules_python",
+    url = "https://github.com/bazelbuild/rules_python/releases/download/0.5.0/rules_python-0.5.0.tar.gz",
+    sha256 = "cd6730ed53a002c56ce4e2f396ba3b3be262fd7cb68339f0377a45e8227fe332",
 )
 
 ### RULES_CONDA ###
-
 # use this instead of http_archive if you cloned the repo and want to use the local version
-#local_repository(
-#    name = "rules_conda",
-#    path = "../",
-#)
-
-RULES_CONDA_NAME = "rules_conda"
-
-RULES_CONDA_TAG = "0.0.6"
-
-RULES_CONDA_SHA = "c5ad3a077bddff381790d64dd9cc1516b8133c1d695eb3eff4fed04a39dc4522"
-
-RULES_CONDA_REPO = "spietras"
-
-RULES_CONDA_ARCHIVE = "zip"
-
-RULES_CONDA_URL = "https://github.com/{repo}/{name}/releases/download/{tag}/{name}-{tag}.{archive}".format(
-    name = RULES_CONDA_NAME,
-    archive = RULES_CONDA_ARCHIVE,
-    repo = RULES_CONDA_REPO,
-    tag = RULES_CONDA_TAG,
+local_repository(
+   name = "rules_conda",
+   path = "../",
 )
 
-# use http_archive rule to load rules_conda repo
-http_archive(
-    name = RULES_CONDA_NAME,
-    sha256 = RULES_CONDA_SHA,
-    url = RULES_CONDA_URL,
-)
+# use this instead of local_repository if you want to use the release version:
+# the example here might use latest feature from main branch but not yet available in the release version
+# http_archive(
+#     name = "rules_conda",
+#     sha256 = "c5ad3a077bddff381790d64dd9cc1516b8133c1d695eb3eff4fed04a39dc4522",
+#     url = "https://github.com/spietras/rules_conda/releases/download/0.0.6/rules_conda-0.0.6.zip"
+# )
 
 load("@rules_conda//:defs.bzl", "conda_create", "load_conda", "register_toolchain")
 
