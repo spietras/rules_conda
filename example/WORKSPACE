@@ -15,7 +15,6 @@ local_repository(
 )
 
 # use this instead of local_repository if you want to use the release version:
-# the example here might use latest feature from main branch but not yet available in the release version
 # http_archive(
 #     name = "rules_conda",
 #     sha256 = "c5ad3a077bddff381790d64dd9cc1516b8133c1d695eb3eff4fed04a39dc4522",
