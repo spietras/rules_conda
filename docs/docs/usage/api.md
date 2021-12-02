@@ -27,8 +27,8 @@
 
     | Name          | Description                                                                                                      | Default                |
     | ------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------------- |
+    | `name`        | Name of the environment                                                                                          |                        |
     | `environment` | label pointing to environment configuration file (typically named `environment.yml`)                             |                        |
-    | `name`        | Name of the environment                                                                                          | `my_env`               |
     | `quiet`       | `True` if `conda` output should be hidden                                                                        | `True`                 |
     | `timeout`     | How many seconds each execute action can take                                                                    | `3600`                 |
     | `clean`       | `True` if `conda` cache should be cleaned (less space taken, but slower subsequent builds)                       | `False`                |

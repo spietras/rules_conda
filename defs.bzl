@@ -6,7 +6,6 @@ load(":toolchain.bzl", "toolchain_rule")
 CONDA_REPO_NAME = "conda"
 CONDA_DIR = "conda"
 DEFAULT_CONDA_VERSION = "4.10.3"
-DEFAULT_ENV_NAME = "my_env"
 DEFAULT_TOOLCHAIN_REPO_NAME = "conda_tools"
 DEFAULT_TOOLCHAIN_NAME = "python_toolchain"
 DEFAULT_MAMBA_VERSION = "0.17.0"
@@ -23,7 +22,7 @@ def load_conda(conda_version = DEFAULT_CONDA_VERSION, mamba_version = DEFAULT_MA
     )
 
 # create conda environment
-def conda_create(name = DEFAULT_ENV_NAME, **kwargs):
+def conda_create(name, **kwargs):
     maybe(
         conda_create_rule,
         name,
