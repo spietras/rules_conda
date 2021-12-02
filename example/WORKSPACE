@@ -18,8 +18,8 @@ local_repository(
 # keep in mind that there may be differences between them
 #http_archive(
 #    name = "rules_conda",
-#    sha256 = "c5ad3a077bddff381790d64dd9cc1516b8133c1d695eb3eff4fed04a39dc4522",
-#    url = "https://github.com/spietras/rules_conda/releases/download/0.0.6/rules_conda-0.0.6.zip"
+#    sha256 = "9793f86162ec5cfb32a1f1f13f5bf776e2c06b243c4f1ee314b9ec870144220d",
+#    url = "https://github.com/spietras/rules_conda/releases/download/0.1.0/rules_conda-0.1.0.zip"
 #)
 
 load("@rules_conda//:defs.bzl", "conda_create", "load_conda", "register_toolchain")

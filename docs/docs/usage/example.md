@@ -23,8 +23,8 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "rules_conda",
-    sha256 = "c5ad3a077bddff381790d64dd9cc1516b8133c1d695eb3eff4fed04a39dc4522",
-    url = "https://github.com/spietras/rules_conda/releases/download/0.0.6/rules_conda-0.0.6.zip"
+    sha256 = "9793f86162ec5cfb32a1f1f13f5bf776e2c06b243c4f1ee314b9ec870144220d",
+    url = "https://github.com/spietras/rules_conda/releases/download/0.1.0/rules_conda-0.1.0.zip"
 )
 
 load("@rules_conda//:defs.bzl", "conda_create", "load_conda", "register_toolchain")
@@ -55,3 +55,47 @@ Otherwise the environment will be recreated from scratch, so that it always refl
 However, if the `clean` flag is set to `False` (the default) in `conda_create` then the downloaded package data will be reused so you don't need to download everything everytime.
 
 Also see [here](https://github.com/spietras/rules_conda/tree/main/example) for a complete example with all the code available.
+
+## Advanced example
+
+This example shows all possibilities of `rules_conda`:
+
+```starlark
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "rules_conda",
+    sha256 = "9793f86162ec5cfb32a1f1f13f5bf776e2c06b243c4f1ee314b9ec870144220d",
+    url = "https://github.com/spietras/rules_conda/releases/download/0.1.0/rules_conda-0.1.0.zip",
+)
+
+load("@rules_conda//:defs.bzl", "conda_create", "load_conda", "register_toolchain")
+
+load_conda(
+    conda_version = "4.10.3",  # version of conda to download, default is 4.10.3
+    installer = "miniforge",  # which conda installer to download, either miniconda or miniforge, default is miniconda
+    install_mamba = True,  # whether to install mamba, which is a faster drop-in replacement for conda, default is False
+    mamba_version = "0.17.0",  # version of mamba to install, default is 0.17.0
+    quiet = False,  # True if conda output should be hidden, default is True
+    timeout = 600,  # how many seconds each execute action can take, default is 3600
+)
+
+conda_create(
+    name = "py3_env",  # name of the environment
+    environment = "@//:py3_environment.yml",  # label pointing to environment configuration file
+    use_mamba = True,  # Whether to use mamba to create the conda environment. If this is True, install_mamba must also be True	False
+    clean = False,  # True if conda cache should be cleaned (less space taken, but slower subsequent builds), default is False
+    quiet = False,  # True if conda output should be hidden	True, default is True
+    timeout = 600,  # how many seconds each execute action can take, default is 3600
+)
+
+conda_create(
+    name = "py2_env",  # name of the environment
+    environment = "@//:py2_environment.yml",  # label pointing to environment configuration file
+)
+
+register_toolchain(
+    py2_env = "py2_env",  # python2 is optional
+    py3_env = "py3_env",
+)
+```
