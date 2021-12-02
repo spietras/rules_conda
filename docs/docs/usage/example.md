@@ -29,25 +29,15 @@ http_archive(
 
 load("@rules_conda//:defs.bzl", "conda_create", "load_conda", "register_toolchain")
 
-load_conda(
-    installer = "miniconda",  # "miniconda" or "miniforge", defaults to "miniconda"
-    quiet = False,  # use True to hide conda output
-    version = "4.10.3",  # optional, defaults to 4.10.3
-    install_mamba = False, # use True to use mamba, which a faster drop-in replacement for conda
-)
+load_conda(quiet = False)
 
 conda_create(
-    name = "my_env",
-    timeout = 600,  # each execute action can take up to 600 seconds
-    clean = False,  # use True if you want to clean conda cache (less space taken, but slower subsequent builds)
-    environment = "@//:environment.yml",  # label pointing to environment.yml file
-    quiet = False,  # use True to hide conda output
-    use_mamba = False, # use True to use mamba, which a faster drop-in replacement for conda
+    name = "py3_env",
+    environment = "@//:environment.yml",
+    quiet = False,
 )
 
-register_toolchain(
-    py3_env = "my_env",
-)
+register_toolchain(py3_env = "py3_env")
 ```
 
 This will download `conda`, create your environment and register it so that all Python targets can use it by default.
@@ -62,6 +52,6 @@ This will run `main.py` inside the created environment.
 
 If environment configuration doesn't change then subsequent runs will simply reuse the environment.
 Otherwise the environment will be recreated from scratch, so that it always reflects the configuration.
-However, if you set the `clean` flag to `False` in `conda_create` then the downloaded package data will be reused so you don't need to download everything everytime.
+However, if the `clean` flag is set to `False` (the default) in `conda_create` then the downloaded package data will be reused so you don't need to download everything everytime.
 
 Also see [here](https://github.com/spietras/rules_conda/tree/main/example) for a complete example with all the code available.

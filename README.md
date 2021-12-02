@@ -34,26 +34,64 @@ http_archive(
 
 load("@rules_conda//:defs.bzl", "conda_create", "load_conda", "register_toolchain")
 
+load_conda(quiet = False)
+
+conda_create(
+    name = "py3_env",
+    environment = "@//:environment.yml",
+    quiet = False,
+)
+
+register_toolchain(py3_env = "py3_env")
+```
+
+After that, all Python targets will use the environment specified in `register_toolchain`.
+
+See below for more advanced example.
+
+## Advanced example
+
+This example shows all possibilities of `rules_conda`:
+
+```starlark
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "rules_conda",
+    sha256 = "c5ad3a077bddff381790d64dd9cc1516b8133c1d695eb3eff4fed04a39dc4522",
+    url = "https://github.com/spietras/rules_conda/releases/download/0.0.6/rules_conda-0.0.6.zip",
+)
+
+load("@rules_conda//:defs.bzl", "conda_create", "load_conda", "register_toolchain")
+
 load_conda(
-    installer = "miniconda",  # "miniconda" or "miniforge", defaults to "miniconda"
-    quiet = False,  # use True to hide conda output
-    version = "4.10.3",  # optional, defaults to 4.10.3
+    conda_version = "4.10.3",  # version of conda to download, default is 4.10.3
+    installer = "miniforge",  # which conda installer to download, either miniconda or miniforge, default is miniconda
+    install_mamba = True,  # whether to install mamba, which is a faster drop-in replacement for conda, default is False
+    mamba_version = "0.17.0",  # version of mamba to install, default is 0.17.0
+    quiet = False,  # True if conda output should be hidden, default is True
+    timeout = 600,  # how many seconds each execute action can take, default is 3600
 )
 
 conda_create(
-    name = "my_env",
-    timeout = 600,  # each execute action can take up to 600 seconds
-    clean = False,  # use True if you want to clean conda cache (less space taken, but slower subsequent builds)
-    environment = "@//:environment.yml",  # label pointing to environment.yml file
-    quiet = False,  # use True to hide conda output
+    name = "py3_env",  # name of the environment, default is my_env
+    environment = "@//:py3_environment.yml",  # label pointing to environment configuration file
+    use_mamba = True,  # Whether to use mamba to create the conda environment. If this is True, install_mamba must also be True	False
+    clean = False,  # True if conda cache should be cleaned (less space taken, but slower subsequent builds), default is False
+    quiet = False,  # True if conda output should be hidden	True, default is True
+    timeout = 600,  # how many seconds each execute action can take, default is 3600
+)
+
+conda_create(
+    name = "py2_env",  # name of the environment, default is my_env
+    environment = "@//:py2_environment.yml",  # label pointing to environment configuration file
 )
 
 register_toolchain(
-    py3_env = "my_env",
+    py2_env = "py2_env",  # python2 is optional
+    py3_env = "py3_env",
 )
 ```
-
-After that, all Python targets will use the environments specified in `register_toolchain`.
 
 ## Who should use this?
 
