@@ -76,7 +76,7 @@ load_conda(
 conda_create(
     name = "py3_env",  # name of the environment
     environment = "@//:py3_environment.yml",  # label pointing to environment configuration file
-    use_mamba = True,  # Whether to use mamba to create the conda environment. If this is True, install_mamba must also be True	False
+    use_mamba = True,  # Whether to use mamba to create the conda environment. If this is True, install_mamba must also be True
     clean = False,  # True if conda cache should be cleaned (less space taken, but slower subsequent builds), default is False
     quiet = False,  # True if conda output should be hidden	True, default is True
     timeout = 600,  # how many seconds each execute action can take, default is 3600
