@@ -28,6 +28,4 @@ conda_create(
     use_mamba = True,
 )
 
-register_toolchain(
-    py3_env = "test_env",
-)
+register_toolchain(env = "test_env")

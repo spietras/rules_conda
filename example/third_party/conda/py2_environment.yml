@@ -1,5 +1,0 @@
-channels:
-  - default
-  - conda-forge
-dependencies:
-  - python=2.7.18

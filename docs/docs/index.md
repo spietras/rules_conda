@@ -8,6 +8,7 @@ See [here](usage/example.md) for usage example.
 
 These rules allow you to download and install `conda`, create `conda` environments and register Python toolchain from environments.
 This means you can achieve truly reproducible and hermetic local python environments.
+Only Python 3 is supported.
 
 Pros:
 
@@ -28,6 +29,7 @@ So I think these rules suit you if:
 - you want to use `conda` for Python environment management
 - you don't want to set up your Python environment manually or want your Python targets to _just work_ on clean systems
 - you are okay with environments being recreated every time something changes
+- you use Python 3
 
 ## Requirements
 
