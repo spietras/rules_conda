@@ -32,15 +32,13 @@ def conda_create(name, **kwargs):
     )
 
 # register python toolchain from environments
-def register_toolchain(py3_env, py2_env = None, name = DEFAULT_TOOLCHAIN_REPO_NAME, toolchain_name = DEFAULT_TOOLCHAIN_NAME, **kwargs):
-    py2_runtime = "@{}//:python_runtime".format(py2_env) if py2_env else None
-    py3_runtime = "@{}//:python_runtime".format(py3_env)
+def register_toolchain(env, name = DEFAULT_TOOLCHAIN_REPO_NAME, toolchain_name = DEFAULT_TOOLCHAIN_NAME, **kwargs):
+    runtime = "@{}//:python_runtime".format(env)
 
     maybe(
         toolchain_rule,
         name,
-        py2_runtime = py2_runtime,
-        py3_runtime = py3_runtime,
+        runtime = runtime,
         toolchain_name = toolchain_name,
         **kwargs
     )

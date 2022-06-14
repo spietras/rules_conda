@@ -39,11 +39,9 @@
 !!! quote ""
 
     Register python toolchain from `conda` environment for all python targets to use.
-    Main environment is used in python3 toolchain. Optionally you can specify another one to use in python2 toolchain.
 
     **Parameters:**
 
     | Name          | Description                                                                                | Default                |
     | ------------- | ------------------------------------------------------------------------------------------ | ---------------------- |
-    | `py3_env`     | Name of the environment to use                                                             |                        |
-    | `py2_env`     | Name of the python2 environment to use (optional)                                          | `None`                 |
+    | `env`         | Name of the environment to use                                                             |                        |

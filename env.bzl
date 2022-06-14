@@ -6,7 +6,7 @@ package(default_visibility = ["//visibility:public"])
 load("@bazel_tools//tools/python:toolchain.bzl", "py_runtime_pair")
 
 py_runtime(
-    name = "python_runtime",
+    name = "{name}",
     files = glob(["{env_path}/**/*"], exclude_directories = 0),
     interpreter = "{env_path}/{interpreter_path}",
     python_version = "PY{py_major}"
@@ -60,22 +60,33 @@ def _create_environment(rctx, executable, env_name):
     _create_empty_environment(rctx, executable, env_name)
     _update_environment(rctx, executable, env_name, env_file)
 
-# check if python2 or python3 has been installed
-def _get_py_major(rctx, env_path, interpreter_path):
+# get installed python version
+def _get_py_version(rctx, env_path, interpreter_path):
     interpreter = "{}/{}".format(env_path, interpreter_path)
     result = rctx.execute([rctx.path(interpreter), "--version"], timeout = rctx.attr.timeout)
     output = result.stdout if result.stdout else result.stderr
-    return int(output.replace("Python ", "").partition(".")[0])
+    return output.replace("Python ", "")
+
+# get major version number
+def _get_major(version):
+    return int(version.partition(".")[0])
 
 # create BUILD file with py_runtime
 def _create_env_build_file(rctx, env_name):
     os = get_os(rctx)
     python_executable = "python{}".format(PYTHON_EXT_MAP[os])
     interpreter_path = python_executable if os == "Windows" else "bin/{}".format(python_executable)
-    py_major = _get_py_major(rctx, env_name, interpreter_path)
+
+    py_version = _get_py_version(rctx, env_name, interpreter_path)
+    py_major = _get_major(py_version)
+
+    if py_major != 3:
+        fail("Only Python 3 is supported. Your Python version is: {}.".format(py_version))
+
     rctx.file(
         "BUILD",
         content = BUILD_FILE_CONTENT.format(
+            name = "python_runtime",
             env_path = env_name,
             interpreter_path = interpreter_path,
             py_major = py_major,
