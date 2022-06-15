@@ -2,7 +2,8 @@
 
 # Globals
 
-BAZELISK_DIR='tools/bazelisk'
+ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]:-$0}")/.." >/dev/null 2>&1 && pwd 2>/dev/null)"
+BAZELISK_DIR="$ROOT_DIR/tools/bazelisk"
 
 # Extra environmental variables
 

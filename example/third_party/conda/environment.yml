@@ -7,4 +7,3 @@ dependencies:
   - numpy==1.21.2
   - pip:
       - scipy==1.7.1  # Demonstrates we can install pip packages too.
-      - git+https://github.com/bast/somepackage.git#egg=somepackage

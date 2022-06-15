@@ -11,7 +11,7 @@ http_archive(
 # use this instead of http_archive if you cloned the repo and want to use the local version
 local_repository(
     name = "rules_conda",
-    path = "../",
+    path = "../src/",
 )
 
 # use this instead of local_repository if you want to use the release version

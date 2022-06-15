@@ -4,7 +4,11 @@ if "%OS%"=="Windows_NT" setlocal
 
 @rem Globals
 
-set "BAZELISK_DIR=tools/bazelisk"
+set "ROOT_DIR=%~pd0.."
+pushd %ROOT_DIR%
+if %ERRORLEVEL% == 0 ( set "ROOT_DIR=%CD%" & popd )
+
+set "BAZELISK_DIR=%ROOT_DIR%\tools\bazelisk"
 set "SYSTEM=windows"
 set "EXTENSION=.exe"
 
@@ -22,9 +26,9 @@ if "%PROCESSOR_ARCHITECTURE%" == "AMD64" ( set "FOUND=1" & set "ARCH=amd64" )
 if "%PROCESSOR_ARCHITEW6432%" == "AMD64" ( set "FOUND=1" & set "ARCH=amd64" )
 if "%PROCESSOR_ARCHITECTURE%" == "ARM64" ( set "FOUND=1" & set "ARCH=arm64" )
 if "%PROCESSOR_ARCHITEW6432%" == "ARM64" ( set "FOUND=1" & set "ARCH=arm64" )
-if "%FOUND%" == 0 ( echo "Unsupported architecture %PROCESSOR_ARCHITECTURE%" & set "EXITCODE=1" & goto end )
+if %FOUND% == 0 ( echo "Unsupported architecture %PROCESSOR_ARCHITECTURE%" & set "EXITCODE=1" & goto end )
 
-set "BAZELISK_EXECUTABLE=%BAZELISK_DIR%/bazelisk-%SYSTEM%-%ARCH%%EXTENSION%"
+set "BAZELISK_EXECUTABLE=%BAZELISK_DIR%\bazelisk-%SYSTEM%-%ARCH%%EXTENSION%"
 
 @rem Check if bazelisk is present
 
@@ -32,7 +36,7 @@ if not exist "%BAZELISK_EXECUTABLE%" ( echo "%BAZELISK_EXECUTABLE% doesn't exist
 
 @rem Execute bazelisk and pass all arguments
 
-"%BAZELISK_DIR%/bazelisk-%SYSTEM%-%ARCH%%EXTENSION%" %*
+"%BAZELISK_DIR%\bazelisk-%SYSTEM%-%ARCH%%EXTENSION%" %*
 set "EXITCODE=%ERRORLEVEL%"
 
 :end
