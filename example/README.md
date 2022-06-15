@@ -12,18 +12,19 @@ Linux:
 
 Windows:
 
-- not sure
+- [`Microsoft Visual C++ Redistributable`](https://docs.microsoft.com/en-US/cpp/windows/latest-supported-vc-redist)
+- [`Developer Mode`](https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development) enabled
 
 ## Usage
 
-Linux:
+If you have Bazel installed, just run:
 
 ```sh
-./bazelw run app
+bazel run app
 ```
 
-Windows:
+If you don't have Bazel installed, you can use [`bazelw`](https://github.com/spietras/rules_conda/tree/main/scripts/bazelw):
 
-```cmd
-bazelw run app
+```sh
+../scripts/bazelw run app
 ```

@@ -7,9 +7,7 @@ on:
       - main
     # trigger only on changes to the following files
     paths:
-      - "*.bzl"
-      - "BUILD"
-      - "WORKSPACE"
+      - "src/**"
       - "tests/**"
       - ".github/workflows/test.yml"
   pull_request:
@@ -18,9 +16,7 @@ on:
       - main
     # trigger only on changes to the following files
     paths:
-      - "*.bzl"
-      - "BUILD"
-      - "WORKSPACE"
+      - "src/**"
       - "tests/**"
       - ".github/workflows/test.yml"
 
@@ -52,21 +48,21 @@ jobs:
       - name: Setup bazelisk
         uses: bazelbuild/setup-bazelisk@v1
         with:
-          bazelisk-version: 1.10.1
+          bazelisk-version: 1.11.0
       - name: Cache bazel
         uses: actions/cache@v2
         with:
           path: ${{ env.BAZEL_CACHE_DIR }}
           key: ${{ runner.os }}-bazel-${{ env.CACHE_NUMBER }}
       - name: Test miniconda with conda
-        working-directory: tests/miniconda/conda
+        working-directory: tests/integration/miniconda/conda
         run: bazel test --test_output=all --test_arg=--verbose --test_arg=-rA ...
       - name: Test miniconda with mamba
-        working-directory: tests/miniconda/mamba
+        working-directory: tests/integration/miniconda/mamba
         run: bazel test --test_output=all --test_arg=--verbose --test_arg=-rA ...
       - name: Test miniforge with conda
-        working-directory: tests/miniforge/conda
+        working-directory: tests/integration/miniforge/conda
         run: bazel test --test_output=all --test_arg=--verbose --test_arg=-rA ...
       - name: Test miniforge with mamba
-        working-directory: tests/miniforge/mamba
+        working-directory: tests/integration/miniforge/mamba
         run: bazel test --test_output=all --test_arg=--verbose --test_arg=-rA ...
