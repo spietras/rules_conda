@@ -1,44 +1,73 @@
-@if "%DEBUG%" == "" @echo off
+@echo off
 
-if "%OS%"=="Windows_NT" setlocal
+setlocal ENABLEDELAYEDEXPANSION
 
 @rem Globals
 
-set "ROOT_DIR=%~pd0.."
-pushd %ROOT_DIR%
-if %ERRORLEVEL% == 0 ( set "ROOT_DIR=%CD%" & popd )
-
-set "BAZELISK_DIR=%ROOT_DIR%\tools\bazelisk"
-set "SYSTEM=windows"
-set "EXTENSION=.exe"
-
-@rem Extra environmental variables
+set "CACHE_DIR=!LOCALAPPDATA!\bazelisk"
+set "BIN_DIR=!CACHE_DIR!\bin"
+set "BAZELISK_PATH=!BIN_DIR!\bazelisk.exe"
+set "TMP_ERROR_FILE=!TEMP!\bazelw_error.tmp"
 
 @rem this allows proper DLL loading, because the environment is not in PATH
 @rem requires new Python versions
 @rem see https://docs.conda.io/projects/conda/en/latest/user-guide/troubleshooting.html#mkl-library
 set "CONDA_DLL_SEARCH_MODIFICATION_ENABLE=1"
 
-@rem Check architecture
+@rem Utils
 
-set FOUND=0
-if "%PROCESSOR_ARCHITECTURE%" == "AMD64" ( set "FOUND=1" & set "ARCH=amd64" )
-if "%PROCESSOR_ARCHITEW6432%" == "AMD64" ( set "FOUND=1" & set "ARCH=amd64" )
-if "%PROCESSOR_ARCHITECTURE%" == "ARM64" ( set "FOUND=1" & set "ARCH=arm64" )
-if "%PROCESSOR_ARCHITEW6432%" == "ARM64" ( set "FOUND=1" & set "ARCH=arm64" )
-if %FOUND% == 0 ( echo "Unsupported architecture %PROCESSOR_ARCHITECTURE%" & set "EXITCODE=1" & goto end )
+goto after
 
-set "BAZELISK_EXECUTABLE=%BAZELISK_DIR%\bazelisk-%SYSTEM%-%ARCH%%EXTENSION%"
+:log
+    echo %~1
+goto :eof
 
-@rem Check if bazelisk is present
+:logError
+    call :log "Error: %~1"
+goto :eof
 
-if not exist "%BAZELISK_EXECUTABLE%" ( echo "%BAZELISK_EXECUTABLE% doesn't exist" & set "EXITCODE=2" & goto end )
+:after
 
-@rem Execute bazelisk and pass all arguments
+@rem Setup
 
-"%BAZELISK_DIR%\bazelisk-%SYSTEM%-%ARCH%%EXTENSION%" %*
-set "EXITCODE=%ERRORLEVEL%"
+if not exist "!BAZELISK_PATH!" ( set setup=1 )
+if not "!BAZELW_UPDATE!" == "" ( set setup=1 )
+
+if defined setup (
+    if not exist "!BIN_DIR!" (
+        md "!BIN_DIR!" >NUL 2>&1
+        if not !ERRORLEVEL! == 0  (
+            call :logError "Can't create !BIN_DIR!"
+            set "EXITCODE=1"
+            goto end
+        )
+    )
+
+    set "ARCH=!PROCESSOR_ARCHITECTURE!"
+    if "!PROCESSOR_ARCHITECTURE!" == "AMD64" ( set "ARCH=amd64" )
+    if "!PROCESSOR_ARCHITEW6432!" == "AMD64" ( set "ARCH=amd64" )
+    if "!PROCESSOR_ARCHITECTURE!" == "ARM64" ( set "ARCH=arm64" )
+    if "!PROCESSOR_ARCHITEW6432!" == "ARM64" ( set "ARCH=arm64" )
+
+    set "BASE_URL=https://github.com/bazelbuild/bazelisk/releases/latest/download"
+    set "FILENAME=bazelisk-windows-!ARCH!.exe"
+    set "BAZELISK_URL=!BASE_URL!/!FILENAME!"
+
+    curl -o "!BAZELISK_PATH!" -fsSL "!BAZELISK_URL!" >"!TMP_ERROR_FILE!" 2>&1
+
+    if not !ERRORLEVEL! == 0  (
+        for /F "delims=" %%A in (!TMP_ERROR_FILE!) do (
+            call :logError "Can't download !BAZELISK_URL! to !BAZELISK_PATH!. %%A"
+        )
+        set "EXITCODE=2"
+        goto end
+    )
+)
+
+@rem Execute
+
+"!BAZELISK_PATH!" %*
+set "EXITCODE=!ERRORLEVEL!"
 
 :end
-if "%OS%"=="Windows_NT" ( endlocal & exit /b "%EXITCODE%" )
-exit /b "%EXITCODE%""
+endlocal & exit /b "!EXITCODE!""
