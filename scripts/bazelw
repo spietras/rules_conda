@@ -2,63 +2,106 @@
 
 # Globals
 
-ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]:-$0}")/.." >/dev/null 2>&1 && pwd 2>/dev/null)"
-BAZELISK_DIR="$ROOT_DIR/tools/bazelisk"
+CACHE_DIR="$HOME/.cache/bazelisk"
+BIN_DIR="$CACHE_DIR/bin"
+BAZELISK_PATH="$BIN_DIR/bazelisk"
 
-# Extra environmental variables
+# Utils
 
-# Check architecture and operating system
+return_string() {
+  printf "%s" "$1"
+}
 
-arch=$(uname -m)
+get_os() {
+  os="$(uname | tr '[:upper:]' '[:lower:]')"
 
-case "$arch" in
-'x86_64' | 'amd64')
-  arch='amd64'
-  ;;
-'aarch64' | 'aarch64_be' | 'armv8b' | 'armv8l' | 'arm64')
-  arch='arm64'
-  ;;
-*)
-  echo "Unsupported architecture: $arch"
-  exit 1
-  ;;
-esac
+  case "$os" in
+  linux*)
+    os="linux"
+    ;;
+  darwin*)
+    os="darwin"
+    ;;
+  msys* | mingw* | cygwin*)
+    os="windows"
+    ;;
+  esac
 
-os=$(uname | tr '[:upper:]' '[:lower:]')
+  return_string "$os"
+}
 
-case "$os" in
-linux*)
-  os="linux"
-  ext=""
-  ;;
-darwin*)
-  os="darwin"
-  ext=""
-  ;;
-msys* | mingw* | cygwin*)
-  os="windows"
-  ext=".exe"
-  ;;
-*)
-  echo "Unsupported OS: $os"
-  exit 2
-  ;;
-esac
+get_arch() {
+  arch="$(uname -m)"
 
-# Check if bazelisk is present and executable
+  case "$arch" in
+  'x86_64' | 'amd64')
+    arch='amd64'
+    ;;
+  'aarch64' | 'aarch64_be' | 'armv8b' | 'armv8l' | 'arm64')
+    arch='arm64'
+    ;;
+  esac
 
-BAZELISK_EXECUTABLE="$BAZELISK_DIR/bazelisk-$os-$arch$ext"
+  return_string "$arch"
+}
 
-if [ ! -e "$BAZELISK_EXECUTABLE" ]; then
-  echo "$BAZELISK_EXECUTABLE doesn't exist"
-  exit 3
+get_binary_url() {
+  os="$1"
+  arch="$2"
+
+  filename="bazelisk-$os-$arch"
+
+  if [ "$os" = "darwin" ] && [ "$arch" != "arm64" ] && [ "$arch" != "amd64" ]; then
+    filename="bazelisk-$os"
+  fi
+
+  if [ "$os" = "windows" ]; then
+    filename="$filename.exe"
+  fi
+
+  base_url="https://github.com/bazelbuild/bazelisk/releases/latest/download"
+
+  return_string "$base_url/$filename"
+}
+
+log() {
+  format="$1"
+  message="$2"
+
+  printf "$format" "$message"
+}
+
+log_error() {
+  log "Error: %s\n" "$1"
+}
+
+# Setup
+
+if [ ! -e "$BAZELISK_PATH" ] || [ -n "$BAZELW_UPDATE" ]; then
+  if [ ! -d "$BIN_DIR" ]; then
+    if ! mkdir -p "$BIN_DIR"; then
+      log_error "Can't create $BIN_DIR"
+      exit 1
+    fi
+  fi
+
+  os="$(get_os)"
+  arch="$(get_arch)"
+  url="$(get_binary_url "$os" "$arch")"
+
+  if ! error="$(curl -o "$BAZELISK_PATH" -fsSL "$url" 2>&1)"; then
+    log_error "Can't download $url. $error"
+    exit 2
+  fi
+
+  if [ ! -x "$BAZELISK_PATH" ]; then
+    if ! chmod +x "$BAZELISK_PATH"; then
+      log_error "Can't set executable bit for $BAZELISK_PATH"
+      exit 3
+    fi
+  fi
 fi
 
-if [ ! -x "$BAZELISK_EXECUTABLE" ]; then
-  echo "$BAZELISK_EXECUTABLE is not executable"
-  exit 4
-fi
+# Execute
 
-# Execute bazelisk and pass all arguments
-
-exec "$BAZELISK_EXECUTABLE" "$@"
+exec "$BAZELISK_PATH" "$@"
