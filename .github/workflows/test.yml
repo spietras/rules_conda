@@ -22,6 +22,7 @@ on:
 
 # env for all jobs
 env:
+  BAZELISK_CACHE_DIR: ~/.cache/bazelisk
   BAZEL_CACHE_DIR: ~/.cache/bazel
   # increase this value to manually reset cache
   CACHE_NUMBER: 0
@@ -35,9 +36,9 @@ jobs:
       matrix:
         # better to use pinned versions here
         config:
-          - { os: ubuntu-20.04, shell: bash -l }
-          - { os: macos-10.15, shell: bash -l }
-          - { os: windows-2019, shell: cmd /C CALL }
+          - { os: ubuntu-20.04, shell: bash -l, script: ./scripts/tests.sh }
+          - { os: macos-10.15, shell: bash -l, script: ./scripts/tests.sh }
+          - { os: windows-2019, shell: cmd /C CALL, script: .\scripts\tests }
     runs-on: ${{ matrix.config.os }}
     defaults:
       run:
@@ -45,24 +46,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Setup bazelisk
-        uses: bazelbuild/setup-bazelisk@v1
+      - name: Cache bazelisk
+        uses: actions/cache@v2
         with:
-          bazelisk-version: 1.11.0
+          path: ${{ env.BAZELISK_CACHE_DIR }}
+          key: ${{ runner.os }}-bazelisk-${{ env.CACHE_NUMBER }}
       - name: Cache bazel
         uses: actions/cache@v2
         with:
           path: ${{ env.BAZEL_CACHE_DIR }}
           key: ${{ runner.os }}-bazel-${{ env.CACHE_NUMBER }}
-      - name: Test miniconda with conda
-        working-directory: tests/integration/miniconda/conda
-        run: bazel test --test_output=all --test_arg=--verbose --test_arg=-rA ...
-      - name: Test miniconda with mamba
-        working-directory: tests/integration/miniconda/mamba
-        run: bazel test --test_output=all --test_arg=--verbose --test_arg=-rA ...
-      - name: Test miniforge with conda
-        working-directory: tests/integration/miniforge/conda
-        run: bazel test --test_output=all --test_arg=--verbose --test_arg=-rA ...
-      - name: Test miniforge with mamba
-        working-directory: tests/integration/miniforge/mamba
-        run: bazel test --test_output=all --test_arg=--verbose --test_arg=-rA ...
+      - name: Run tests
+        run: ${{ matrix.config.script }}
