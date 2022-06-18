@@ -66,8 +66,8 @@ if defined setup (
 
 @rem Execute
 
-"!BAZELISK_PATH!" %*
+call "!BAZELISK_PATH!" %*
 set "EXITCODE=!ERRORLEVEL!"
 
 :end
-endlocal & exit /b "!EXITCODE!""
+endlocal & exit /b %EXITCODE%

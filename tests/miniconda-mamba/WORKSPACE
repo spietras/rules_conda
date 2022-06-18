@@ -8,14 +8,13 @@ http_archive(
 
 local_repository(
     name = "rules_conda",
-    path = "../../../../src/",
+    path = "../../src/",
 )
 
 load("@rules_conda//:defs.bzl", "conda_create", "load_conda", "register_toolchain")
 
 load_conda(
     install_mamba = True,
-    installer = "miniforge",
     quiet = False,
 )
 
