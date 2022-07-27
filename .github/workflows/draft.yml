@@ -10,7 +10,7 @@ jobs:
   draft:
     name: Update draft release
     # better to use pinned version here
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: release-drafter/release-drafter@v5
         with:
