@@ -36,9 +36,9 @@ jobs:
       matrix:
         # better to use pinned versions here
         config:
-          - { os: ubuntu-20.04, shell: bash -l, script: ./scripts/tests.sh }
-          - { os: macos-10.15, shell: bash -l, script: ./scripts/tests.sh }
-          - { os: windows-2019, shell: cmd /C CALL, script: .\scripts\tests }
+          - { os: ubuntu-latest, shell: bash -l, script: ./scripts/tests.sh }
+          - { os: macos-latest, shell: bash -l, script: ./scripts/tests.sh }
+          - { os: windows-latest, shell: cmd /C CALL, script: .\scripts\tests }
     runs-on: ${{ matrix.config.os }}
     defaults:
       run:
