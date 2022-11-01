@@ -99,7 +99,11 @@ def _conda_create_impl(rctx):
     _create_environment(rctx, executable, env_name)
     if rctx.attr.clean:
         _clean(rctx, executable)
-    _create_env_build_file(rctx, env_name)
+    if not rctx.attr.build_file:
+        _create_env_build_file(rctx, env_name)
+    else:
+        rctx.symlink(rctx.attr.build_file, "BUILD")
+
 
 conda_create_rule = repository_rule(
     _conda_create_impl,
@@ -126,6 +130,9 @@ conda_create_rule = repository_rule(
         "clean": attr.bool(
             default = False,
             doc = "True if conda cache should be cleaned",
+        ),
+        "build_file": attr.label(
+            doc = "The location of a custom Bazel BUILD file",
         ),
     },
 )
