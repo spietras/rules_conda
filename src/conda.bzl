@@ -23,19 +23,19 @@ CONDA_INSTALLER_NAME_TEMPLATE = "Miniconda{major}-{minor}-{os}-{arch}{ext}"
 CONDA_BASE_URL = "https://repo.anaconda.com/miniconda/"
 
 MINIFORGE_MAJOR = "3"
-MINIFORGE_MINOR = "4.10.3-7"
+MINIFORGE_MINOR = "4.12.0-2"
 MINIFORGE_SHA = {
     "Windows": {
-        "x86_64": "e3b1e7c5a02315c90bbb20d27614e00183ba8247594c57fb1f0484ccf5f9471c",
+        "x86_64": "39c71fa902188edaf8c90a9868e6b76fb9d3f08c4d5c48c8077054b8e0aa5417",
     },
     "MacOSX": {
-        "x86_64": "a25c1b381b20873ed856ce675a7a2ccf48f1d6782a5cdce9f06496e6ffa7883f",
-        "arm64": "3cd1f11743f936ba522709eb7a173930c299ac681671a909b664222329a56290",
+        "x86_64": "37007407ab504fb8bd3af68ff821c0819ad2f016087b9c45f1e95a910c92531e",
+        "arm64": "24181b1a42c6bb9704e28ac4ecb234f3c86d882a7db408948692bc5792a2f713",
     },
     "Linux": {
-        "x86_64": "4de9b7dcc9b2761136f4a7a42a8b2ea06ae2ebc61d865c9fca0db3d6c90b569d",
-        "aarch64": "d597961defe8c7889f3e924d0dc7624fab2c8845abccdd8ffa8da8018ff3dc6e",
-        "ppc64le": "8825827240c0d06413876055bf3a04d8704f0e5ac773692a352502862dce7aa5",
+        "x86_64": "e8bd60572d1bdcd9fc16114f423653c95e02f0be1393383f77fba17cf8acb10e",
+        "aarch64": "507c9763942821d7541b5a1b1130545e4c19416cc0473054faa10fee435aa9fa",
+        "ppc64le": "447d1729353189ba732e951b598d5b9ea4ab46296db4523ac34a775150a60199",
     },
 }
 
