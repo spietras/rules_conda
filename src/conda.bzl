@@ -2,39 +2,40 @@ load(":utils.bzl", "CONDA_EXT_MAP", "EXECUTE_TIMEOUT", "INSTALLER_SCRIPT_EXT_MAP
 
 # CONDA CONFIGURATION
 CONDA_MAJOR = "3"
-CONDA_MINOR = "py39_4.10.3"
+CONDA_MINOR = "py39_4.12.0"
 CONDA_SHA = {
     "Windows": {
-        "x86_64": "b33797064593ab2229a0135dc69001bea05cb56a20c2f243b1231213642e260a",
-        "x86": "24f438e57ff2ef1ce1e93050d4e9d13f5050955f759f448d84a4018d3cd12d6b",
+        "x86_64": "1acbc2e8277ddd54a5f724896c7edee112d068529588d944702966c867e7e9cc",
+        "x86": "4fb64e6c9c28b88beab16994bfba4829110ea3145baa60bda5344174ab65d462",
     },
     "MacOSX": {
-        "x86_64": "786de9721f43e2c7d2803144c635f5f6e4823483536dc141ccd82dbb927cd508",
+        "x86_64": "007bae6f18dc7b6f2ca6209b5a0c9bd2f283154152f82becf787aac709a51633",
+        "arm64": "4bd112168cc33f8a4a60d3ef7e72b52a85972d588cd065be803eb21d73b625ef",
     },
     "Linux": {
-        "x86_64": "1ea2f885b4dbc3098662845560bc64271eb17085387a70c2ba3f29fff6f8d52f",
-        "aarch64": "4879820a10718743f945d88ef142c3a4b30dfc8e448d1ca08e019586374b773f",
-        "ppc64le": "362705630a9e85faf29c471faa8b0a48eabfe2bf87c52e4c180825f9215d313c",
-        "s390x": "1faed9abecf4a4ddd4e0d8891fc2cdaa3394c51e877af14ad6b9d4aadb4e90d8",
+        "x86_64": "78f39f9bae971ec1ae7969f0516017f2413f17796670f7040725dd83fcff5689",
+        "aarch64": "5f4f865812101fdc747cea5b820806f678bb50fe0a61f19dc8aa369c52c4e513",
+        "ppc64le": "1fe3305d0ccc9e55b336b051ae12d82f33af408af4b560625674fa7ad915102b",
+        "s390x": "ff6fdad3068ab5b15939c6f422ac329fa005d56ee0876c985e22e622d930e424",
     },
 }
 CONDA_INSTALLER_NAME_TEMPLATE = "Miniconda{major}-{minor}-{os}-{arch}{ext}"
 CONDA_BASE_URL = "https://repo.anaconda.com/miniconda/"
 
 MINIFORGE_MAJOR = "3"
-MINIFORGE_MINOR = "4.10.3-7"
+MINIFORGE_MINOR = "4.12.0-2"
 MINIFORGE_SHA = {
     "Windows": {
-        "x86_64": "e3b1e7c5a02315c90bbb20d27614e00183ba8247594c57fb1f0484ccf5f9471c",
+        "x86_64": "39c71fa902188edaf8c90a9868e6b76fb9d3f08c4d5c48c8077054b8e0aa5417",
     },
     "MacOSX": {
-        "x86_64": "a25c1b381b20873ed856ce675a7a2ccf48f1d6782a5cdce9f06496e6ffa7883f",
-        "arm64": "3cd1f11743f936ba522709eb7a173930c299ac681671a909b664222329a56290",
+        "x86_64": "37007407ab504fb8bd3af68ff821c0819ad2f016087b9c45f1e95a910c92531e",
+        "arm64": "24181b1a42c6bb9704e28ac4ecb234f3c86d882a7db408948692bc5792a2f713",
     },
     "Linux": {
-        "x86_64": "4de9b7dcc9b2761136f4a7a42a8b2ea06ae2ebc61d865c9fca0db3d6c90b569d",
-        "aarch64": "d597961defe8c7889f3e924d0dc7624fab2c8845abccdd8ffa8da8018ff3dc6e",
-        "ppc64le": "8825827240c0d06413876055bf3a04d8704f0e5ac773692a352502862dce7aa5",
+        "x86_64": "e8bd60572d1bdcd9fc16114f423653c95e02f0be1393383f77fba17cf8acb10e",
+        "aarch64": "507c9763942821d7541b5a1b1130545e4c19416cc0473054faa10fee435aa9fa",
+        "ppc64le": "447d1729353189ba732e951b598d5b9ea4ab46296db4523ac34a775150a60199",
     },
 }
 
