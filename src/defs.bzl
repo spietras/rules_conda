@@ -5,10 +5,10 @@ load(":toolchain.bzl", "toolchain_rule")
 
 CONDA_REPO_NAME = "conda"
 CONDA_DIR = "conda"
-DEFAULT_CONDA_VERSION = "4.10.3"
+DEFAULT_CONDA_VERSION = "23.1.0"
 DEFAULT_TOOLCHAIN_REPO_NAME = "conda_tools"
 DEFAULT_TOOLCHAIN_NAME = "python_toolchain"
-DEFAULT_MAMBA_VERSION = "0.17.0"
+DEFAULT_MAMBA_VERSION = "1.3.1"
 
 # download and install conda
 def load_conda(conda_version = DEFAULT_CONDA_VERSION, mamba_version = DEFAULT_MAMBA_VERSION, **kwargs):
