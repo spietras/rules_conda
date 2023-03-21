@@ -125,7 +125,7 @@ def _install_mamba(rctx, executable):
 # use conda to update itself
 def _update_conda(rctx, executable):
     conda_with_version = "conda={}".format(rctx.attr.conda_version)
-    args = [rctx.path(executable), "install", conda_with_version, "-y"]
+    args = [rctx.path(executable), "install", "-n", "base", conda_with_version, "-y"]
 
     # update conda itself
     result = rctx.execute(args, quiet = rctx.attr.quiet, working_directory = rctx.attr.conda_dir, timeout = rctx.attr.timeout)
