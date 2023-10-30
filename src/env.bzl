@@ -9,7 +9,8 @@ py_runtime(
     name = "{name}",
     files = glob(["{env_path}/**/*"], exclude_directories = 0),
     interpreter = "{env_path}/{interpreter_path}",
-    python_version = "PY{py_major}"
+    python_version = "PY{py_major}",
+    stub_shebang = "#!/usr/bin/env -S PATH=${{PATH}}:{conda_bin_path} python3",
 )
 """
 
@@ -83,6 +84,7 @@ def _create_env_build_file(rctx, env_name):
     if py_major != 3:
         fail("Only Python 3 is supported. Your Python version is: {}.".format(py_version))
 
+    conda_bin_path = rctx.path("env/bin")
     rctx.file(
         "BUILD",
         content = BUILD_FILE_CONTENT.format(
@@ -90,6 +92,7 @@ def _create_env_build_file(rctx, env_name):
             env_path = env_name,
             interpreter_path = interpreter_path,
             py_major = py_major,
+            conda_bin_path = conda_bin_path,
         ),
     )
 
