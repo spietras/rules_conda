@@ -1,0 +1,9 @@
+channels:
+  - default
+  - conda-forge
+dependencies:
+  - python==3.9.7
+  - pip==21.2.4
+  - jbig2dec
+  - pip:
+    - pikepdf
